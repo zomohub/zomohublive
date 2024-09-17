@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook-Style Email</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #e1e1e1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-image: url('<?php echo $wo['config']['theme_url'];?>/img/email/top-bg-gradient.png');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header-container {
+            width: 100%;
+        }
+
+        .header img {
+            width: 235px;
+        }
+        
+        .header .logo-title { font-size: 18px;}
+
+        .banner-section {
+            background-image: url('<?php echo $wo['config']['theme_url'];?>/img/email/banner-img.png');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .main-content {
+            padding: 20px;
+
+        }
+
+        .footer {
+            background-color: #1E2321;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .footer a {
+            color: #97BFFF;
+            text-decoration: none;
+        }
+
+        .socials a {
+            margin: 0 5px;
+            text-decoration: none;
+        }
+
+        .socials img {
+            width: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="container" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="header">
+                <table class="header-container">
+                    <tr>
+                        <td class="logo-title">
+                            A dedicated shared platform for
+                            the global sports community.
+                        </td>
+                        <td>
+                            <img src="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>" alt="<?php echo $wo['config']['siteName'];?> Logo">
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="banner-section">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="main-content">
+               {{message_body}}
+            </td>
+        </tr>
+        <tr>
+            <td class="footer">
+                <div class="socials">
+                    <a href="#" target="_blank">
+                        <img src="<?php echo $wo['config']['theme_url'];?>/img/email/instagram.png" />
+                    </a>
+                    <a href="#" target="_blank">
+                        <img src="<?php echo $wo['config']['theme_url'];?>/img/email/youtube-icon.png" />
+                    </a>
+                    <a href="#" target="_blank">
+                        <img src="<?php echo $wo['config']['theme_url'];?>/img/email/fb-icon.png" />
+                    </a>
+                </div>
+              
+                <p><br>&copy; <?=date('Y');?> <?php echo $wo['config']['siteName'];?>. All rights reserved.</p>
+                <p><a href="<?php echo $wo['config']['site_url']; ?>/terms/privacy-policy" target="_blank">Privacy Policy</a> | <a href="<?php echo $wo['config']['site_url']; ?>/terms/terms"  target="_blank">Terms of Use</a></p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

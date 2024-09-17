@@ -1,0 +1,42 @@
+/* 
+
+Add here your custom css styles Example: p { text-align: center; color: red; } 
+
+*/
+/* zomo custom css */
+#player_id_container { background-color:#f0f0f0; padding:20px;  }
+
+
+
+
+/* Start Page */
+.start-page-panel { margin-top: 20px; text-align: center;}
+.start-page-panel b { display:block; margin-top: 20px; font-size:18px; }
+.start-page-panel p { display:block; margin-top: 20px; }
+.start-page-panel .wow_sett_content { padding: 25px; }
+
+
+/* Timeline */
+.timeline-user-profession { color: black; font-size: 15px; background-color: #cbb069; padding: 10px; display: inline-block; margin-top: 10px; letter-spacing: 3px; line-height: 10px;text-shadow: none; border-radius: 10px; }
+
+
+/* Profile Setting */
+.profile-setting-checkbox  {  position: relative;
+    margin: 15px 0;
+    font-family: Segoe UI Historic, Segoe UI, Helvetica, Arial, sans-serif; }
+.profile-setting-checkbox > label {
+    font-weight: bold;
+    font-size: 14.5px;
+    display: block;
+}
+
+.profile-setting-checkbox .col-md-4 { margin-bottom:10px;}
+
+
+/* About Us */
+.zomo-about-us-section { display:block; font-size:20px; width: 100%; text-align: center; border-bottom: 1px solid #000; margin-bottom:30px; padding:0 20px 15px 20px; margin-bottom: 15px; }
+.zomo-about-us-section img { width:75px; height:75px; }
+.zomo-about-us-section p { display:block; width:100%; padding-top:15px;}
+
+
+#fullsizeimg img { min-height: auto; } 

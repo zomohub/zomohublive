@@ -1,0 +1,272 @@
+<style>
+/* Grid for thumbnails */
+.thumbnail-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+    background-color: #fff; /* Ensure the white background covers the grid */
+    padding: 15px; /* Add padding to give some space between the content and the edge */
+    border-radius: 8px; /* Smooth rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    justify-content: center; /* Center thumbnails horizontally */
+}
+
+.thumbnail-grid img,
+.thumbnail-grid video {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 10px); /* Three images per row */
+    height: auto;
+    object-fit: cover;
+}
+
+.thumbnail-grid img:hover,
+.thumbnail-grid video:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+.container-class {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+    background-color: #fff; /* Add a background color for the container */
+    padding: 20px; /* Add padding to create space inside the container */
+    border-radius: 12px; /* Smooth rounded corners for the container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+}
+
+.floating-element {
+    position: absolute; /* Ensure absolute positioning respects container boundaries */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.thumbnail-grid img,
+.thumbnail-grid video {
+    max-width: 100%; /* Ensure the image or video fits within the container */
+    height: auto;
+    object-fit: cover; /* Maintain the image's aspect ratio */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add spacing below the thumbnails */
+.thumbnail-grid {
+    margin-bottom: 20px; /* Adds space below the thumbnails */
+}
+
+/* Styling for the "Create" button */
+.create-button-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+
+</style>
+
+<div class="page-margin">
+    <div class="row">
+        <div class="col-md-2 leftcol"><?php echo Wo_LoadPage("sidebar/left-sidebar"); ?></div>
+        <div class="col-md-7 middlecol">
+            <div class="page-margin wow_content mt-0">
+                <div class="wo_page_hdng pag_neg_padd pag_alone">
+                    <div class="wo_page_hdng_innr">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M11,19A6,6 0 0,0 17,13H19A8,8 0 0,1 11,21A8,8 0 0,1 3,13A8,8 0 0,1 11,5V7A6,6 0 0,0 5,13A6,6 0 0,0 11,19M19,5H22V7H19V10H17V7H14V5H17V2H19V5Z"></path>
+                            </svg>
+                        </span> 
+                        <?php echo $wo['lang']['create_new_status'];?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-margin wow_content wow_sett_content">
+    <form class="create-user-story form-horizontal" method="post" enctype="multipart/form-data" id="storyForm">
+        <div class="publisher-hidden-option">
+            <div id="progress">
+                <span id="percent">0%</span>
+                <div class="progress">
+                    <div id="bar" class="progress-bar progress-bar-striped active"></div> 
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="wow_form_fields">
+            <label><?php echo $wo['lang']['media'];?></label>
+            <div class="wow_fcov_image wow_stroy_media" data-block="thumdrop-zone">
+                <div id="wow_fcov_img_holder" class="thumbnail-grid">
+                    <!-- Thumbnails will be displayed here -->
+                </div>
+                <div class="upload_ad_image" onclick="document.getElementById('user-storymedia').click(); return false">
+                    <div class="upload_ad_image_content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"></path>
+                        </svg>
+                        <?php echo $wo['lang']['drop_img_videos_here'] ?> 
+                        <?php echo $wo['lang']['or']; ?> 
+                        <?php echo $wo['lang']['browse_to_upload']; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="create-status-alert hidden">
+            <div class="alert alert-danger"><?php echo $wo['lang']['max_number_status_6'] ?></div>
+        </div>
+
+        <!-- The new button wrapper -->
+        <div class="create-button-wrapper">
+            <button class="btn btn-main btn-mat btn-mat-raised add_wow_loader" type="submit"><?php echo $wo['lang']['create']; ?></button>
+        </div>
+
+        <input type="file" name="statusMedia[]" class="hidden" id="user-storymedia" multiple>
+        <input type="file" name="cover" class="hidden" id="user-storymedia-2">
+    </form>
+</div>
+
+        </div>
+        <!-- .col-md-8 -->
+        <?php echo Wo_LoadPage('sidebar/content');?>
+    </div>
+    <!-- .row -->
+</div>
+
+<script>
+jQuery(document).ready(function($) {
+    var thumb_drop_block = $("[data-block='thumdrop-zone']");
+
+    if (typeof(window.FileReader) == 'undefined') {
+      thumb_drop_block.find('.thumbnail-rendderer div').text('Drag drop is not supported in your browser!');
+    }
+    else{
+      thumb_drop_block[0].ondragover = function() {
+          thumb_drop_block.addClass('hover');
+          return false;
+      };
+          
+      thumb_drop_block[0].ondragleave = function() {
+          thumb_drop_block.removeClass('hover');
+          return false;
+      };
+
+      thumb_drop_block[0].ondrop = function(event) {
+          event.preventDefault();
+          thumb_drop_block.removeClass('hover');
+          var files = event.dataTransfer.files;
+          if (files.length > 6) {
+          	$(".create-status-alert").removeClass('hidden');
+          	return false;
+          }
+          handleFiles(files, "#wow_fcov_img_holder");
+          $("#user-storymedia").prop('files', files);
+      };
+    }
+
+    $("#user-storymedia").change(function () {
+        var numFiles = this.files.length;
+        if (numFiles > 6) {
+         $("#user-storymedia").val('');
+         $(".create-status-alert").removeClass('hidden');
+        }
+        else{
+            handleFiles(this.files, "#wow_fcov_img_holder");
+        }
+    });
+
+    $("#user-storymedia-2").change(function () {
+        var numFiles = this.files.length;
+        if (numFiles > 6) {
+         $("#user-storymedia-2").val('');
+         $(".create-status-alert").removeClass('hidden');
+        }
+        else{
+            handleFiles(this.files, "#wow_fcov_img_holder");
+        }
+    });
+
+    function handleFiles(files, targetElement) {
+    $(targetElement).empty(); // Clear existing thumbnails
+    for (let i = 0; i < files.length; i++) {
+        var file = files[i];
+        displayThumbnail(file, targetElement);
+    }
+}
+
+function displayThumbnail(file, targetElement) {
+    var fileType = file.type.split('/')[0];
+    if (fileType === 'image') {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $(targetElement).append('<img src="' + e.target.result + '" alt="Thumbnail" class="img-thumbnail" />');
+        };
+        reader.readAsDataURL(file);
+    } else if (fileType === 'video') {
+        var video = document.createElement('video');
+        video.src = URL.createObjectURL(file);
+        video.controls = true;
+        video.className = 'img-thumbnail'; // Add styling class
+        $(targetElement).append(video);
+    }
+}
+
+    var bar = $('#bar');
+    var percent = $('#percent');
+
+    $('#storyForm').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=status&s=new',
+       type:"POST",
+       beforeSend: function() {
+       	var percentVal = '0%';
+        bar.width(percentVal);
+        percent.html(percentVal);
+        $('.create-user-story').find('.add_wow_loader').addClass('btn-loading');
+       },
+       uploadProgress: function (event, position, total, percentComplete) {
+           var percentVal = percentComplete + '%';
+           bar.width(percentVal);
+           $('#progress').slideDown(200);
+           if(percentComplete > 50) {
+             percent.addClass('white');
+           }
+           percent.html(percentVal);
+      },
+       success: function(data) {
+        scrollToTop();
+        if (data['status'] == 200) {
+          $(".create-status-alert").removeClass('hidden').html('<div class="alert alert-success">'+ data['message'] +'</div>');
+          window.location = '<?php echo $wo['config']['site_url']; ?>';
+        } else if (data['message']) {
+          $(".create-status-alert").removeClass('hidden').html('<div class="alert alert-danger">' + data['message'] + '</div>');
+        } else if(data.invalid_file == 3) {
+	          $("#adult_image_file").modal('show');
+	          Wo_Delay(function(){
+	            $("#adult_image_file").modal('hide');
+	          },3000);
+        }
+
+        $('.create-user-story').find('.add_wow_loader').removeClass('btn-loading');
+      }});
+
+   });
+</script>

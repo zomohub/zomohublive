@@ -1,0 +1,13 @@
+<?php 
+$data = $db->where('name','activate')->getOne(T_HTML_EMAILS);
+$html = $data->value;
+$replaces = array('FIRST_NAME' => $wo['user']['first_name'],
+                 'LAST_NAME' => $wo['user']['last_name'],
+                 'USERNAME' => $wo['user']['name'],
+                 'SITE_URL' => $wo['config']['site_url'],
+                 'EMAIL' => $wo['user']['email'],
+                 'CODE' => $wo['code'],
+                 'SITE_NAME' => $wo['config']['siteName']);
+$html = Wo_ReplaceText($html,$replaces);
+echo $html;
+ ?>

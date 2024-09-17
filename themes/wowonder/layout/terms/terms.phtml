@@ -1,0 +1,29 @@
+<div class="page-margin">
+
+	<div class="wo_about_wrapper_parent">
+		<div class="wo_about_wrapper"> 
+			<div class="hero hero-overlay"> 
+				<div class="container">
+					<h1 class="text-center"> 
+					<?php echo $wo['lang']['terms_of_use']; ?> <br> 
+				
+					</h1>
+				</div> 
+			</div> 
+			<div class="full-width-picture" style="background-image: url(<?php echo $wo['config']['theme_url'];?>/img/about-us.jpg);"></div> 
+		</div>
+	</div>
+
+	
+	<div class="wow_main_blogs_bg"></div>
+	
+	<div class="wow_content wo_terms_page">
+		<div class="setting-well">
+			<?php echo $wo['lang']['terms_of_use_page'];?>
+		</div>
+	</div>
+</div>
+
+<script>
+$('.wow_main_blogs_bg').css('height', ($('.wo_about_wrapper_parent').height()) + 'px');
+</script>

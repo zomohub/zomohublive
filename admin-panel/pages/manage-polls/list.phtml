@@ -1,0 +1,24 @@
+<tr class="setting-postlist" id="<?php echo $wo['poll']['id'];?>" data_selected="<?php echo($wo['poll']['id']) ?>">
+   <td><?php echo $wo['poll']['id'];?></td>
+   <td><?php echo $wo['poll']['pollTitle'];?></td>
+   <td><?php echo $wo['poll']['startDate'];?></td>
+   <td><?php echo $wo['poll']['endDate'];?></td>
+   <td class="monthly-poll-container">
+      <ul>
+      <?php 
+         foreach($wo['poll']['answers'] as $ans)
+         { ?>
+            <li><?php echo $ans['pollAnswer']; ?><span><?php echo $ans['count']; ?></span></li>
+         <?php }
+      ?>
+      </ul>
+
+   <div class="total-votes">
+   <strong>Total</strong><span><?php echo $wo['poll']['total_count']; ?></span>
+   </div>
+   </td>
+   <td>
+      <a class="btn bg-success admn_table_btn" href="<?php echo Wo_LoadAdminLinkSettings('edit-poll?id=' . $wo['poll']['id']); ?>">Edit</a>
+      <button class="btn bg-danger admn_table_btn" onclick="Wo_DeletePoll(<?php echo $wo['poll']['id'];?>,'hide');">Delete</button>
+   </td>
+</tr>

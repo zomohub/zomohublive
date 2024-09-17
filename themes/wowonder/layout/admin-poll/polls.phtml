@@ -1,0 +1,35 @@
+<?php 
+
+
+
+$polls = Wo_GetPollsList();
+    
+    if($polls){
+    foreach($polls as $poll)
+        {   
+            // echo "<pre>";
+            // print_r($poll);
+            // echo "</pre>";
+            $is_voted = Wo_IsAdminPollVoted( $poll['id'] ,$wo['user']['user_id']);
+            ?>
+            <div class="monthly-poll-container" user_id="<?php echo $wo['user']['user_id']; ?>" style="background-image:url('<?php echo $wo['config']['theme_url'];?>/img/poll-bg.svg');" data-vote='<?php echo ($is_voted) ? 'true' : 'false'?>'>
+                <img src="<?php echo $wo['config']['theme_url'];?>/img/poll_btn.png" />
+                <strong><?php echo $poll['pollTitle']; ?></strong>
+                    <ul>
+                        <?php if($poll['answers']['answers']) foreach($poll['answers']['answers'] as $ans) { ?>
+                        <li id="admin-poll-option-<?php echo $ans['id']?>" onclick="Wo_adminPollVoteUp(<?php echo $ans['id']?>);" data-admin-poll-id="<?php echo $poll['id'];?>"><?php echo $ans['pollAnswer'] ?> <span><?php echo $ans['vote_count']; ?></span></li>
+                        <?php } ?> 
+                    </ul>
+            <div class="row">
+                <div class="col-md-12 mb-2" id="admin-poll-total-count-<?php echo $poll['id'];?>">
+                    <span class="total-votes" style="display:<?php echo ($poll['answers']['total_votes'] == 0)?'none':'block';?>"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M3,22V8H7V22H3M10,22V2H14V22H10M17,22V14H21V22H17Z"></path></svg> <?php echo $poll['answers']['total_votes']; ?>
+                    </span>
+                </div>
+                <div class="col-md-12 mb-2" id="admin-poll-alert-msg-<?php echo $poll['id'];?>">
+                </div>
+            </div>
+
+            </div>
+        <?php }  
+    }?>

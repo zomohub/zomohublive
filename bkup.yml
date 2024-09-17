@@ -1,0 +1,28 @@
+image: php:8.0
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        caches:
+          - composer
+        script:
+          - apt-get update && apt-get install -y unzip curl
+          - curl -sS https://getcomposer.org/installer | php
+          - mv composer.phar /usr/local/bin/composer
+          - composer install
+          - curl -sS https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit
+          - chmod +x /usr/local/bin/phpunit
+          - phpunit --version
+          - phpunit --coverage-text
+    - step:
+        name: Deploy to cPanel
+        deployment: production
+        script:
+          - apt-get update && apt-get install -y openssh-client
+          - mkdir -p ~/.ssh
+          - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          - chmod 600 ~/.ssh/id_rsa
+          - ssh-keyscan -H $HOSTNAME >> ~/.ssh/known_hosts
+          - rsync -avz --exclude='.git' --exclude='bitbucket-pipelines.yml' . $SSH_USER@$HOSTNAME:$DEPLOY_PATH
+          - ssh $SSH_USER@$HOSTNAME 'cd $DEPLOY_PATH && composer install && php artisan migrate'

@@ -1,0 +1,67 @@
+<div class="page-margin">
+
+	
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Create Page</h3>
+			<p>Whether you’re an influencer or a company, you can connect your business, organisation, or brand to the global sports community on ZOMO HUB. To get started, Login or Register and select Create Page.</p>
+		</div>
+		<div class="col-md-6 start-page-panel">
+			<div class="wow_content wow_sett_content">
+				<img src="<?php echo $wo['config']['theme_url'];?>/img/biz.png" />
+				<b>Influencer or Brand</b>
+				<p>Whether you’re an influencer or a company, you can connect your business, organisation, or brand to the global sports community on ZOMO HUB. To get started, Login or Register and select Create Page.<br><br><a href="<?php echo Wo_SeoLink('index.php?link1=welcome');?>">Login</a> or <a href="<?php echo Wo_SeoLink('index.php?link1=register');?>">Register</a></p>
+			</div>
+			
+		</div>
+		<div class="col-md-6 start-page-panel">
+			<div class="wow_content wow_sett_content">
+				<img src="<?php echo $wo['config']['theme_url'];?>/img/co.png" />
+				<b>Business or Organization</b>
+				<p>Whether you’re an influencer or a company, you can connect your business, organisation, or brand to the global sports community on ZOMO HUB. To get started, Login or Register and select Create Page.<br><br><a href="<?php echo Wo_SeoLink('index.php?link1=welcome');?>">Login</a> or <a href="<?php echo Wo_SeoLink('index.php?link1=register');?>">Register</a></p>
+			</div>
+
+		</div>
+		<!-- .col-md-8 -->
+		<div class="col-md-3"></div>
+	</div>
+	<!-- .row -->
+</div>
+<!-- .page-margin -->
+<script>
+	<?php if ($wo['config']['reCaptcha'] == 1 && !empty($wo['config']['reCaptchaKey'])) { ?>
+	setTimeout(() => {
+		widgetId2 = grecaptcha.render(document.getElementById('g-recaptcha-widget'), {
+	    'sitekey' : "<?php echo $wo['config']['reCaptchaKey']?>"
+	  });
+	},500);
+	<?php } ?>
+function activateButton(element) {
+	if(element.checked) {
+		document.getElementById("send").disabled = false;
+	}
+	else  {
+		document.getElementById("send").disabled = true;
+	}
+};
+$('.wow_main_blogs_bg').css('height', ($('.wo_about_wrapper_parent').height()-150) + 'px');
+   $(function() {
+     $('form.contact-us-form').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=contact_us',
+       beforeSend: function() {
+		 $('form.contact-us-form').find('.add_wow_loader').addClass('btn-loading');
+       },
+       success: function(data) {
+         if (data.status == 200) {
+            $('.contact-us-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+            $('.alert-success').fadeIn(300);
+         } else {
+             var errors = data.errors.join("<br>");
+             $('.contact-us-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+             $('.alert-danger').fadeIn(300);
+         }
+         $('form.contact-us-form').find('.add_wow_loader').removeClass('btn-loading');
+       }
+     });
+   });
+</script>

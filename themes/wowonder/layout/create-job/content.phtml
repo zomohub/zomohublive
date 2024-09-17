@@ -1,0 +1,184 @@
+<?php $job_type = array('full_time','part_time','internship','volunteer','contract'); ?>
+<div class="page-margin">
+	<div class="wow_main_float_head jobs new_jobs">
+		<div class="container">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"></path></svg>
+			<h1>Create Job</h1>
+			<!-- <p><?php echo $wo['lang']['search_find_job_at']; ?> <?php echo $wo['config']['siteName'];?></p> -->
+		</div>
+	</div>
+	
+	<div class="wow_main_blogs_bg"></div>
+	
+	<div class="wow_content wo_job_head_filter">
+		<div class="search-blog">
+		<form class="form form-horizontal" method="post" id="insert-event">
+					<div class="wow_form_fields" bis_skin_checked="1">
+						<label for="event-name">Job Title</label>
+						<input id="event-name" name="event-name" type="text">
+					</div>
+					<div class="wow_form_fields" bis_skin_checked="1">
+						<label for="event-locat">Location</label>
+						<input id="event-locat" name="event-locat" type="text">
+					</div>
+											<div id="review-location" bis_skin_checked="1">
+							<div id="place" bis_skin_checked="1"></div>
+						</div>
+										<div class="wow_form_fields" bis_skin_checked="1">
+						<label for="event-start">Salary Range</label>
+						<div class="row" bis_skin_checked="1">
+							<div class="col-md-6" bis_skin_checked="1">
+								<input type="hidden" class="date flatpickr-input" id="event-start" name="event-start-date"><input class="date form-control input" placeholder="" tabindex="0" type="text" readonly="readonly">
+							</div>
+							<div class="col-md-6" bis_skin_checked="1">
+								<input type="text" id="event-start-time" class="time1 flatpickr-input" name="event-start-time" readonly="readonly">
+							</div>
+						</div>
+					</div>
+					<div class="wow_form_fields" bis_skin_checked="1">
+						<label for="event-end-date">Job Type</label>
+						<div class="row" bis_skin_checked="1">
+							<div class="col-md-12" bis_skin_checked="1">
+								<input type="hidden" class="date1 flatpickr-input" name="event-end-date" id="event-end-date"><input class="date1 form-control input" placeholder="" tabindex="0" type="text" readonly="readonly">
+							</div>
+						
+						</div>
+					</div>
+					<div class="wow_form_fields" bis_skin_checked="1">
+						<label for="event-description">Description</label>
+						<textarea name="event-description" id="event-description" rows="5"></textarea>
+					</div>
+		
+					
+					<div class="setting-update-alert" id="event-alert" bis_skin_checked="1"></div>
+					
+		
+				</form>
+		</div>
+
+
+
+	</div>
+	
+
+
+	<div class="clear"></div>
+		<br>		
+           <?php //echo Wo_LoadPage('footer/content'); ?>
+</div>
+<div class="modal fade" id="delete-job-modal" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span></button>
+				<h4 class="modal-title"><?php echo $wo['lang']['delete_job']; ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['confirm_delete_job']; ?></p>
+				<input type="hidden" id="delet_job_id">
+			</div>
+			<div class="modal-footer">
+				<div class="ball-pulse"><div></div><div></div><div></div></div>
+				<button id="delete-all-post" type="button" onclick="Wo_DeleteJob();" class="btn btn-main btn-mat"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$('.wow_main_blogs_bg').css('height', ($('.wow_main_float_head').height()) + 'px');
+
+function Wo_OpenJobDeleteBox(job_id) {
+  $('#delet_job_id').val(job_id);
+  var delete_box = $('#delete-job-modal');
+  delete_box.modal({
+    show: true
+  });
+}
+function Wo_DeleteJob() {
+  Wo_CloseLightbox();
+  var job_id = $('#delet_job_id').val();
+  var delete_box = $('#delete-job-modal');
+  $('#delete-job-modal').find('.ball-pulse').fadeIn(100);
+  $.get(Wo_Ajax_Requests_File(), {
+    f: 'job',
+    s: 'delete_job',
+    job_id: job_id
+  }, function (data) {
+    if(data.status == 200) {
+      delete_box.modal('hide');
+      setTimeout(function () {
+        $('#product-' + job_id).slideUp(200, function () {
+          $(this).remove();
+        });
+      }, 300);
+    }
+    $('#delete-job-modal').find('.ball-pulse').fadeOut(100);
+  });
+}
+function Wo_SearchJobsNearBy() {
+	length = $('#cusrange-reader').val();
+	text_value = $('#job-text').val();
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {value: text_value, c_id:c_id,type:type, length: length}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<?php echo $wo['lang']['no_available_jobs'] ?>');
+			}
+		}
+	});
+}
+function Wo_LoadJobs() {
+	$('.load-produts').html('<div class="white-loading list-group"><div class="cs-loader"><div class="cs-loader-inner"><label> ●</label><label> ●</label><label> ●</label><label> ●</label><label> ●</label><label> ●</label></div></div></div>');
+	var $c_id = $('#c_id').val();
+	var text = $('#job-text').val();
+	var $last_id = $('.product:last').attr('data-id');
+	var price = $('.product:last').attr('data_price');
+	var length = $('#distance_val').text();
+	var price_sort = $('#PriceSortValue').attr('data_PriceSortType');
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {last_id: $last_id, c_id:$c_id,type:type, length: length,price_sort:price_sort,price:price,text:text}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadJobs();"><i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more_products'] ?></button></div>');
+				$('#products').append(data.html);
+			} else {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadJobs();"><?php echo $wo['lang']['no_available_jobs'] ?></button></div>');
+			}
+		}
+	});
+}
+function Wo_SearchJobs(value) {
+	length = $('#distance_val').text();
+	var price_sort = $('#PriceSortValue').attr('data_PriceSortType');
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {value: value, c_id:c_id,type:type, length: length,price_sort:price_sort}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<?php echo $wo['lang']['no_available_jobs'] ?>');
+			}
+		}
+	});
+}
+</script>
