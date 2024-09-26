@@ -22,7 +22,6 @@ if ($f == "update-event") {
             if (empty($_POST['event-end-time'])) {
                 $error = $error_icon . $wo['lang']['please_check_details'];
             }
-
             // Simplified date comparison logic
             $date_start = explode('-', $_POST['event-start-date']);
             $date_end = explode('-', $_POST['event-end-date']);
@@ -49,24 +48,37 @@ if ($f == "update-event") {
                 if (!empty($_POST['cropped_image'])) {
                     $cropped_image_data = $_POST['cropped_image'];
 
-                    // Extract the base64 data from the string (e.g., data:image/png;base64,...)
-                    list($type, $cropped_image_data) = explode(';', $cropped_image_data);
-                    list(, $cropped_image_data) = explode(',', $cropped_image_data);
+                    // Extract the base64 data
+                    if (preg_match('/^data:image\/(\w+);base64,/', $cropped_image_data, $type)) {
+                        $cropped_image_data = substr($cropped_image_data, strpos($cropped_image_data, ',') + 1);
+                        $type = strtolower($type[1]); // jpg, png, gif
 
-                    // Decode the base64 data
-                    $cropped_image_data = base64_decode($cropped_image_data);
+                        if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
+                            throw new \Exception('Invalid image type');
+                        }
 
-                    // Generate a unique name for the cropped image
-                    $cropped_image_name = 'cropped_' . time() . '.png'; // or use .jpg/.jpeg depending on the file type
+                        $cropped_image_data = base64_decode($cropped_image_data);
 
-                    // Define the file path where the cropped image will be saved
+                        if ($cropped_image_data === false) {
+                            throw new \Exception('Base64 decode failed');
+                        }
+                    } else {
+                        throw new \Exception('Did not match data URI with image data');
+                    }
+
+                    // Generate a unique name for the image
+                    $cropped_image_name = 'cropped_' . time() . '.' . $type;
+
+                    // Define the file path
                     $file_path = 'uploads/events/' . $cropped_image_name;
 
-                    // Save the cropped image to the server
-                    file_put_contents($file_path, $cropped_image_data);
+                    // Save the image
+                    if (file_put_contents($file_path, $cropped_image_data) === false) {
+                        throw new \Exception('Failed to save the cropped image file');
+                    }
 
-                    // Update the database with the cropped image name
-                    Wo_UploadImage($file_path, $cropped_image_name, 'cover', 'image/png', $_GET['eid'], 'event');
+                    // Update the event cover
+                    Wo_UploadImage($file_path, $cropped_image_name, 'cover', 'image/' . $type, $_GET['eid'], 'event');
                 } 
                 // Handle the regular image file upload if no cropped image
                 else if (!empty($_FILES["event-cover"]["tmp_name"])) {

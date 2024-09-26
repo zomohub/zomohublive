@@ -15,6 +15,9 @@
 			
 			<div class="page-margin wow_content wow_sett_content">
 				<form class="form form-horizontal" method="post" id="update-event">
+				<!-- Hidden input for storing the cropped image data -->
+				<input type="hidden" id="cropped_image" name="cropped_image">
+
 					<div class="wow_form_fields">
 						<label for="event-name"><?php echo $wo['lang']['name']; ?></label>
 						<input id="event-name" name="event-name" type="text" value="<?php echo $wo['event']['name']; ?>">
@@ -177,28 +180,49 @@
 		cropper = null;
 	});
 
-	// When the crop button is clicked
-	document.getElementById('cropImage').addEventListener('click', function() {
-		var canvas;
-		if (cropper) {
-			canvas = cropper.getCroppedCanvas({
-				width: 800,
-				height: 450,
-			});
-			canvas.toBlob(function(blob) {
-				var reader = new FileReader();
-				reader.readAsDataURL(blob);
-				reader.onloadend = function() {
-					var base64data = reader.result;
-					$("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Picture'>");
-					$('#cropperModal').modal('hide');
+// When the crop button is clicked
+document.getElementById('cropImage').addEventListener('click', function() {
+    var canvas;
+    if (cropper) {
+        canvas = cropper.getCroppedCanvas({
+            width: 800,
+            height: 450,
+        });
+        canvas.toBlob(function(blob) {
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function() {
+                var base64data = reader.result;
+                $("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Picture'>");
+                $('#cropperModal').modal('hide');
 
-					// Set the cropped image data to a hidden input field
-					$('#cropped_image').val(base64data);
-				};
-			});
-		}
-	});
+                // Set the cropped image data to a hidden input field
+                $('#cropped_image').val(base64data);
+				$('#cropperModal').modal('hide');
+            };
+        });
+    }
+});
+
+// AJAX Form Submission
+$('#update-event').ajaxForm({
+    // Ensure the form includes all data
+    data: $('#update-event').serialize(),
+    url: Wo_Ajax_Requests_File() + '?f=update-event&eid=<?php echo $wo['event']['id']; ?>',
+    beforeSend: function() {
+        $('.wo_settings_page').find('.add_wow_loader').addClass('btn-loading');
+    },
+    success: function(data) {
+        if (data['status'] == 200) {
+            $("#event-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+            window.location = data['url'];
+        } else if (data['message']) {
+            $("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+        }
+        $('.wo_settings_page').find('.add_wow_loader').removeClass('btn-loading');
+    }
+});
+
 
 	$(".date").flatpickr({
 		dateFormat: "Y-m-d",
