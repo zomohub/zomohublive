@@ -20,7 +20,10 @@ $fields = Wo_GetWelcomeFileds();
 
 			<div class="page-margin wow_content wow_sett_content">
 				<form class="form form-horizontal" method="post" id="insert-event">
-					
+			<!-- Hidden input for storing the cropped image data -->
+    <input type="hidden" id="cropped_image" name="cropped_image">
+    <!-- Other form fields go here -->
+
 					<div class="wow_form_fields">
 						<label for="event-name"><?php echo $wo['lang']['name']; ?></label>
 						<input id="event-name" name="event-name" type="text">
@@ -167,28 +170,29 @@ $fields = Wo_GetWelcomeFileds();
 			cropper = null;
 		});
 
-		document.getElementById('cropImage').addEventListener('click', function() {
-			var canvas;
-			if (cropper) {
-				canvas = cropper.getCroppedCanvas({
-					width: 800,
-					height: 450,
-				});
-				canvas.toBlob(function(blob) {
-					var url = URL.createObjectURL(blob);
-					var reader = new FileReader();
-					reader.readAsDataURL(blob);
-					reader.onloadend = function() {
-						var base64data = reader.result;
-						$("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Picture'>");
-						$('#cropperModal').modal('hide');
+	document.getElementById('cropImage').addEventListener('click', function() {
+    var canvas;
+    if (cropper) {
+        canvas = cropper.getCroppedCanvas({
+            width: 800,
+            height: 450,
+        });
+        canvas.toBlob(function(blob) {
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function() {
+                var base64data = reader.result;
+                $("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Cropped Image'>");
+                $('#cropperModal').modal('hide');
 
-						// Set the cropped image data to a hidden input field
-						$('#cropped_image').val(base64data);
-					};
-				});
-			}
-		});
+                // Set the base64 cropped image data into the hidden input field
+                $('#cropped_image').val(base64data);
+            };
+        });
+    }
+});
+
+
 
 		// zomo  customization end
 
