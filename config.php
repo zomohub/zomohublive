@@ -34,7 +34,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_user = "zomohub";
     $sql_db_pass = "sIBuO1rvnK8TU1fhVnLY";
     $sql_db_name = "zomohub";
-    $site_url = "ec2-34-198-35-11.compute-1.amazonaws.com"; // e.g. (http://example.com)
+    $site_url = "http://ec2-34-198-35-11.compute-1.amazonaws.com"; // e.g. (http://example.com)
 }
 
 
