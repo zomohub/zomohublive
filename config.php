@@ -30,11 +30,11 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $site_url = "http://localhost/zomolive"; // e.g. (http://example.com)
 } else {
     // Live server settings
-    $sql_db_host = "localhost";
-    $sql_db_user = "zomohubc_werey";
-    $sql_db_pass = "]Iwo6c5mkKru";
-    $sql_db_name = "zomohubc_zomohub_social_media";
-    $site_url = "https://phase1.zomohub.com"; // e.g. (http://example.com)
+    $sql_db_host = "database-1.c3iyeo2a6nzb.us-east-1.rds.amazonaws.com";
+    $sql_db_user = "zomohub";
+    $sql_db_pass = "sIBuO1rvnK8TU1fhVnLY";
+    $sql_db_name = "zomohub";
+    $site_url = "http://ec2-34-198-35-11.compute-1.amazonaws.com"; // e.g. (http://example.com)
 }
 
 
