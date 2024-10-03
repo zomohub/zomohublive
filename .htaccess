@@ -289,3 +289,28 @@ ExpiresDefault "access plus 1 month"
   Header unset Keep-Alive
   Header set Keep-Alive timeout=100,max=500
 </ifModule>
+# Video MIME types
+AddType video/mp4 .mp4
+AddType video/mpeg .mpeg
+AddType video/quicktime .mov .qt
+AddType video/x-flv .flv
+AddType video/x-msvideo .avi
+AddType video/webm .webm
+
+# Audio MIME types
+AddType audio/wav .wav
+AddType audio/mpeg .mp3 .mpeg
+AddType audio/mp3 .mp3
+
+# Image MIME types
+AddType image/png .png
+AddType image/jpeg .jpg .jpeg
+AddType image/gif .gif
+
+# Document MIME types
+AddType application/pdf .pdf
+AddType application/msword .doc
+AddType application/zip .zip
+AddType application/x-rar-compressed .rar
+AddType text/plain .txt
+AddType text/css .css
