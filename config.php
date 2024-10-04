@@ -25,9 +25,9 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     // Local server settings
     $sql_db_host = "localhost";
     $sql_db_user = "root";
-    $sql_db_pass = "1234";
+    $sql_db_pass = "";
     $sql_db_name = "zomolive";
-    $site_url = "http://localhost/zomolive"; // e.g. (http://example.com)
+    $site_url = "http://localhost/zomohublive"; // e.g. (http://example.com)
 } else {
     // Live server settings
     $sql_db_host = "database-1.c3iyeo2a6nzb.us-east-1.rds.amazonaws.com";
