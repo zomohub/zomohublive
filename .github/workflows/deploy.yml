@@ -1,9 +1,9 @@
-name: Deploy to cPanel
+name: Deploy to cPanel (dev)
 
 on:
   push:
     branches:
-      - release_phase2  # This means the action will run when changes are pushed to the main branch.
+      - release_phase2  # Replace 'dev' with your branch name
 
 jobs:
   deploy:
@@ -13,10 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install expect
+        run: sudo apt-get install -y expect
+
+      - name: Set up SSH with passphrase
+        run: |
+          # Start expect to handle the passphrase input
+          expect -c '
+          spawn ssh-add
+          expect "Enter passphrase for"
+          send "$env(SSH_PASSPHRASE)\r"
+          interact'
+        env:
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}  # Store the passphrase in GitHub Secrets
 
       - name: Sync files to server
         run: |
