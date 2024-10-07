@@ -20,4 +20,4 @@ jobs:
 
     - name: Deploy code via SSH
       run: |
-        ssh -o StrictHostKeyChecking=no your_cpanel_username@your_cpanel_domain "cd /home/zomohubc/public_html/phase2 && git pull origin main"
+        ssh -o StrictHostKeyChecking=no your_cpanel_username@your_cpanel_domain "cd /home/zomohubc/public_html/phase2 && git pull origin release_phase2"
