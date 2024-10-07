@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - main  # This triggers the action on every push to the main branch
+      - release_phase2  # This triggers the action on every push to the main branch
 
 jobs:
   deploy:
