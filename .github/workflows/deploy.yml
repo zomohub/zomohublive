@@ -20,5 +20,4 @@ jobs:
 
     - name: Deploy code via SSH
       run: |
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no zomohubc@107.6.161.242 "cd /home/zomohubc/public_html/phase2 && git pull origin release_phase2"
-
+        ssh -o StrictHostKeyChecking=no zomohubc@107.6.161.242 "cd /home/zomohubc/public_html/phase2 && git pull origin release_phase2"
