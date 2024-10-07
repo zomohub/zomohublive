@@ -1,1 +1,1 @@
-<?php echo "test project CICD 6"; ?>
+<?php echo "test project CICD 7"; ?>
