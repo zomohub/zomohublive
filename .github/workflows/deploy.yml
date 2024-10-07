@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - release_phase2  # Trigger deployment on push to main branch
+      - release_phase2  # This triggers the action on every push to the main branch
 
 jobs:
   deploy:
@@ -13,11 +13,10 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
-    - name: Set up SSH with passphrase
+    - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.4
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        ssh-passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Add the private SSH key as a secret in GitHub
 
     - name: Deploy code via SSH
       run: |
