@@ -1,34 +1,23 @@
-name: Deploy to cPanel (dev)
+name: Deploy to cPanel
 
 on:
   push:
     branches:
-      - release_phase2  # Replace 'dev' with your branch name
+      - main  # This triggers the action on every push to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout the repository
+      uses: actions/checkout@v3
 
-      - name: Install expect
-        run: sudo apt-get install -y expect
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Add the private SSH key as a secret in GitHub
 
-      - name: Set up SSH with passphrase
-        run: |
-          # Start expect to handle the passphrase input
-          expect -c '
-          spawn ssh-add
-          expect "Enter passphrase for"
-          send "$env(SSH_PASSPHRASE)\r"
-          interact'
-        env:
-          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}  # Store the passphrase in GitHub Secrets
-
-      - name: Sync files to server
-        run: |
-          rsync -avz --delete \
-          -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" \
-          ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/zomohubc/public_html/phase2
+    - name: Deploy code via SSH
+      run: |
+        ssh -o StrictHostKeyChecking=no your_cpanel_username@your_cpanel_domain "cd /home/your_cpanel_username/public_html/your_project_folder && git pull origin main"
