@@ -48,3 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+.htaccess
+bk.htaccess
+config.php
+.htaccess
+config.php

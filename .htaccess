@@ -289,13 +289,3 @@ ExpiresDefault "access plus 1 month"
   Header unset Keep-Alive
   Header set Keep-Alive timeout=100,max=500
 </ifModule>
-RewriteEngine On
-
-# Force HTTPS and www
-RewriteCond %{HTTPS} !=on [OR]
-RewriteCond %{HTTP_HOST} !^www\.
-RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
-
-# If accessing the domain without www, redirect to www version
-RewriteCond %{HTTP_HOST} ^zomohub\.com [NC]
-RewriteRule ^(.*)$ https://www.zomohub.com/$1 [R=301,L]
