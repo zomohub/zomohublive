@@ -3,6 +3,9 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+
+upload/
+deploy.yaml
 # Node artifact files
 node_modules/
 dist/
@@ -48,7 +51,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+.htaccess
+bk.htaccess
 config.php
+.htaccess
 config.php
-zomo_ssh
-zomo_ssh.pub
