@@ -286,25 +286,6 @@ ExpiresDefault "access plus 1 month"
   Header set Keep-Alive timeout=100,max=500
 </ifModule>
 AuthType Basic
-AuthName "Restricted Area"
-AuthUserFile /dev/null
+AuthName "Protected Site"
+AuthUserFile /home/ec2-user/.htpasswd
 Require valid-user
-SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-
-<If "%{HTTP:Authorization} != 'Basic dXNlcm5hbWU6cGFzc3dvcmQ='">
-    AuthType Basic
-    AuthName "Restricted"
-    AuthUserFile /dev/null
-    Require valid-user
-</If>
-AuthType Basic
-AuthName "Restricted Area"
-AuthUserFile /dev/null
-Require valid-user
-SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
-
-<If "%{HTTP:Authorization} != 'Basic em9vbWh1Yjp6b29taHViQCFAYyM='">
-    AuthType Basic
-    AuthName "Restricted Area"
-    Require valid-user
-</If>

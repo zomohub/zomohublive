@@ -289,3 +289,7 @@ ExpiresDefault "access plus 1 month"
   Header unset Keep-Alive
   Header set Keep-Alive timeout=100,max=500
 </ifModule>
+AuthType Basic
+AuthName "Protected Site"
+AuthUserFile /home/ec2-user/.htpasswd
+Require valid-user
