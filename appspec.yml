@@ -2,10 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html  # Change this to your destination directory
+    destination: /var/www/html
 
 hooks:
   AfterInstall:
-    - location: set_permissions.sh  # Path to the script that sets permissions
+    - location: set_permissions.sh
       runas: root
-
