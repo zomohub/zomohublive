@@ -21,6 +21,9 @@
 // $site_url = "http://localhost/zomohub"; // e.g (http://example.com)
 
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 // Determine if the environment is local or live
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
@@ -28,7 +31,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_host = "localhost";
     $sql_db_user = "root";
     $sql_db_pass = "";
-    $sql_db_name = "zomohub";
+    $sql_db_name = "zomolive";
     $site_url = "http://localhost/zomohublive"; // e.g. (http://example.com)
 } else {
     // Live server settings
@@ -38,7 +41,8 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_name = "zomohub";
     $site_url = "https://www.zomohub.com"; // e.g. (http://example.com)
 }
-
+// echo $sql_db_name;
+// die();
 
 $auto_redirect = true;
 

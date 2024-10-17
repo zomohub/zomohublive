@@ -53,3 +53,8 @@ Thumbs.db
 
 .htaccess
 config.php
+/upload
+htaccess
+/cache
+config.php
+htaccess
