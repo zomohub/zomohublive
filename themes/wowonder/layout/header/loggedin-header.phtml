@@ -13,6 +13,8 @@ $followers_hidden_class = '';
 $unread_update_notification = 'unread-update';
 $unread_update_messages = 'unread-update';
 $unread_update_followers = 'unread-update';
+// Add this line here to prevent the warning
+$setting_page = isset($wo['setting_page']) ? $wo['setting_page'] : '';
 if ($notification_alert == 0) {
     $hidden_class = ' hidden';
     $unread_update_notification = '';
