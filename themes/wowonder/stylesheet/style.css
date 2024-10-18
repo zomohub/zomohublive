@@ -29675,16 +29675,46 @@ html, body {
 
 .page-margin {
     flex: 1;
-    margin-bottom: 20px; /* Adjust to add space between content and footer */
+    margin-bottom: 0; /* Adjust to add space between content and footer if needed */
 }
+
 .footer-wrapper {
     width: 100%;
     background: #ffffff; /* White background for the footer */
-    text-align: center;
     padding: 20px 0; /* Add padding for spacing inside the footer */
     margin-top: auto; /* Pushes the footer to the bottom if content is short */
     border-top: 1px solid #ccc; /* Light gray border on top for a clean separation */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow to give depth */
-    border-radius: 15px; /* Rounded corners for the footer */
+    border-radius: 15px 15px 0 0; /* Rounded corners for the top of the footer */
+    text-align: center; /* Ensure footer content is centered */
 }
 
+.footer-powered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list-inline {
+    list-style-type: none;
+    padding: 0;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.list-inline li {
+    display: inline;
+}
+
+.footer-copyright {
+    margin-top: 15px; /* Space between links and copyright */
+    text-align: center;
+    font-size: 14px;
+}
+
+.clear {
+    clear: both;
+}
