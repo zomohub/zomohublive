@@ -64,7 +64,7 @@
 
 					<div class="wow_form_fields ">
 						<label for="about"><?php echo $wo['lang']['about_me']; ?></label>  
-						<?php $text = br2nl($wo['setting']['about']); ?>
+						<?php $text = isset($wo['setting']['about']) ? br2nl($wo['setting']['about']) : ''; ?>
 						<textarea id="about" name="about" rows="3"><?php echo $text;?></textarea>
 					</div>
 					<div class="wow_form_fields ">
