@@ -29677,7 +29677,7 @@ html, body {
     flex: 1;
     margin-bottom: 20px; /* Adjust to add space between content and footer */
 }
-.footer-wrapper {
+/* .footer-wrapper {
     width: 100%;
     background: #ffffff; /* White background for the footer */
     text-align: center;
@@ -29686,5 +29686,5 @@ html, body {
     border-top: 1px solid #ccc; /* Light gray border on top for a clean separation */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow to give depth */
     border-radius: 15px; /* Rounded corners for the footer */
-}
+} */
 
