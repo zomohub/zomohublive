@@ -59,9 +59,13 @@ $pages = array(
     'backups',
     'manage-custom-pages',
     'add-new-custom-page',
+    
     'manage-polls',
     'add-new-poll',
     'edit-poll',
+
+    'professional-titles',
+    
     'edit-custom-page',
     'edit-terms-pages',
     'manage_terms_pages',
