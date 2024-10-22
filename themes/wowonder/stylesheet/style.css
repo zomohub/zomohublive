@@ -29679,12 +29679,17 @@ html, body {
 }
 /* .footer-wrapper {
     width: 100%;
-    background: #ffffff; /* White background for the footer */
+    background: #ffffff;
     text-align: center;
-    padding: 20px 0; /* Add padding for spacing inside the footer */
-    margin-top: auto; /* Pushes the footer to the bottom if content is short */
-    border-top: 1px solid #ccc; /* Light gray border on top for a clean separation */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow to give depth */
-    border-radius: 15px; /* Rounded corners for the footer */
+    padding: 20px 0;
+    margin-top: auto;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 15px
 } */
+
+/* Hide Chat Panel */
+body, .navbar-default, .wo_about_wrapper_parent { padding-right: 0 !important;}
+.chat-container { display:none; }
+.chat_main {right:0;}
 
