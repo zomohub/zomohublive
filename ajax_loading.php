@@ -378,8 +378,8 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                     case 'directory-market':
                         include('sources/directory/market.php');
                         break;
-                    case 'directory-movies':
-                        include('sources/directory/movies.php');
+                    case 'directory-streams':
+                        include('sources/directory/streams.php');
                         break;
                     case 'directory-jobs':
                         include('sources/directory/jobs.php');
@@ -393,17 +393,17 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
                     case 'directory-forums':
                         include('sources/directory/forums.php');
                         break;
-                    case 'movies':
-                        include('sources/movies/movies.php');
+                    case 'streams':
+                        include('sources/streams/streams.php');
                         break;
-                    case 'movies-genre':
-                        include('sources/movies/movies_genre.php');
+                    case 'streams-genre':
+                        include('sources/streams/streams_genre.php');
                         break;
-                    case 'movies-country':
-                        include('sources/movies/movies_country.php');
+                    case 'streams-country':
+                        include('sources/streams/streams_country.php');
                         break;
                     case 'watch-film':
-                        include('sources/movies/watch_film.php');
+                        include('sources/streams/watch_film.php');
                         break;
                     case 'advertise':
                         include('sources/ads/ads.php');
@@ -974,17 +974,17 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             case 'sharer':
                 include('sources/sharer.php');
                 break;
-            case 'movies':
-                include('sources/movies/movies.php');
+            case 'streams':
+                include('sources/streams/streams.php');
                 break;
-            case 'movies-genre':
-                include('sources/movies/movies_genre.php');
+            case 'streams-genre':
+                include('sources/streams/streams_genre.php');
                 break;
-            case 'movies-country':
-                include('sources/movies/movies_country.php');
+            case 'streams-country':
+                include('sources/streams/streams_country.php');
                 break;
             case 'watch-film':
-                include('sources/movies/watch_film.php');
+                include('sources/streams/watch_film.php');
                 break;
             case 'advertise':
                 include('sources/ads/ads.php');
@@ -1115,8 +1115,8 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
             case 'directory-market':
                 include('sources/directory/market.php');
                 break;
-            case 'directory-movies':
-                include('sources/directory/movies.php');
+            case 'directory-streams':
+                include('sources/directory/streams.php');
                 break;
             case 'directory-jobs':
                 include('sources/directory/jobs.php');
@@ -1209,8 +1209,8 @@ if ((!$wo['loggedin'] || ($wo['loggedin'] && $wo['user']['banned'] != 1))) {
         case 'directory-market':
             include('sources/directory/market.php');
             break;
-        case 'direcajax_loadtory-movies':
-            include('sources/directory/movies.php');
+        case 'direcajax_loadtory-streams':
+            include('sources/directory/streams.php');
             break;
         case 'directory-jobs':
             include('sources/directory/jobs.php');

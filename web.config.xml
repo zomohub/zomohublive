@@ -533,15 +533,15 @@
             </rule>
             <rule name="rule 131k">
                <match url="^movies(/?|)$"  ignoreCase="true" />
-               <action type="Rewrite" url="/index.php?link1=movies"  appendQueryString="true" />
+               <action type="Rewrite" url="/index.php?link1=streams"  appendQueryString="true" />
             </rule>
             <rule name="rule 132k">
                <match url="^movies/genre/([A-Za-z-]+)(/?|)$"  ignoreCase="true" />
-               <action type="Rewrite" url="/index.php?link1=movies-genre&amp;genre={R:1}"  appendQueryString="true" />
+               <action type="Rewrite" url="/index.php?link1=streams-genre&amp;genre={R:1}"  appendQueryString="true" />
             </rule>
             <rule name="rule 133k">
                <match url="^movies/country/([A-Za-z-]+)(/?|)$"  ignoreCase="true" />
-               <action type="Rewrite" url="/index.php?link1=movies-country&amp;country={R:1}"  appendQueryString="true" />
+               <action type="Rewrite" url="/index.php?link1=streams-country&amp;country={R:1}"  appendQueryString="true" />
             </rule>
             <rule name="rule 134k">
                <match url="^movies/watch/(\d+)(/?|)$"  ignoreCase="true" />

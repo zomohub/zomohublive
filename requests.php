@@ -33,6 +33,7 @@ $allow_array = array(
     'wallet',
     'download_user_info',
     'movies',
+    'streams',
     'funding',
     'stripe',
     'coinbase',
