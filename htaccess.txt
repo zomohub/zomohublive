@@ -143,11 +143,11 @@ RewriteRule ^events/interested(/?|)$ index.php?link1=events-interested [NC,QSA]
 RewriteRule ^events/past(/?|)$ index.php?link1=events-past [NC,QSA]
 RewriteRule ^events/(\d+)(/?|)$ index.php?link1=show-event&eid=$1 [NC,QSA]
 
-# *** MOVIES ***
-RewriteRule ^movies(/?|)$ index.php?link1=movies [NC,QSA]
-RewriteRule ^movies/genre/([A-Za-z-]+)(/?|)$ index.php?link1=movies-genre&genre=$1 [NC,QSA]
-RewriteRule ^movies/country/([A-Za-z-]+)(/?|)$ index.php?link1=movies-country&country=$1 [NC,QSA]
-RewriteRule ^movies/watch/(.*)$ index.php?link1=watch-film&film-id=$1 [NC,QSA]
+# *** streams ***
+RewriteRule ^streams(/?|)$ index.php?link1=streams [NC,QSA]
+RewriteRule ^streams/genre/([A-Za-z-]+)(/?|)$ index.php?link1=streams-genre&genre=$1 [NC,QSA]
+RewriteRule ^streams/country/([A-Za-z-]+)(/?|)$ index.php?link1=streams-country&country=$1 [NC,QSA]
+RewriteRule ^streams/watch/(.*)$ index.php?link1=watch-film&film-id=$1 [NC,QSA]
 
 # *** ADS ***
 RewriteRule ^ads(/?|)$ index.php?link1=ads [NC,QSA]
@@ -185,7 +185,7 @@ RewriteRule ^directory/groups(.*)$ index.php?link1=directory-groups&page=$1 [NC,
 RewriteRule ^directory/market(.*)$ index.php?link1=directory-market&page=$1 [NC,QSA]
 RewriteRule ^directory/events(.*)$ index.php?link1=directory-events&page=$1 [NC,QSA]
 RewriteRule ^directory/games(.*)$ index.php?link1=directory-games&page=$1 [NC,QSA]
-RewriteRule ^directory/movies(.*)$ index.php?link1=directory-movies&page=$1 [NC,QSA]
+RewriteRule ^directory/streams(.*)$ index.php?link1=directory-streams&page=$1 [NC,QSA]
 RewriteRule ^directory/jobs(.*)$ index.php?link1=directory-jobs&page=$1 [NC,QSA]
 RewriteRule ^directory/fundings(.*)$ index.php?link1=directory-fundings&page=$1 [NC,QSA]
 RewriteRule ^directory/blogs(.*)$ index.php?link1=directory-blogs&page=$1 [NC,QSA]

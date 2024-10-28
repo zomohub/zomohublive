@@ -193,10 +193,10 @@
 			</a>
 		</li>
 		<?php } ?>
-		<?php if ($wo['config']['movies'] == 1 && $wo['config']['can_use_movies']) { ?>
+		<?php if ($wo['config']['streams'] == 1 && $wo['config']['can_use_movies']) { ?>
 		<li>
-			<a href="<?php echo Wo_SeoLink('index.php?link1=movies'); ?>" data-ajax="?link1=movies">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#8d73cc" d="M18,9H16V7H18M18,13H16V11H18M18,17H16V15H18M8,9H6V7H8M8,13H6V11H8M8,17H6V15H8M18,3V5H16V3H8V5H6V3H4V21H6V19H8V21H16V19H18V21H20V3H18Z"></svg><img src="<?php echo $wo['config']['theme_url'];?>/img/sidebar/movie.svg"> <?php echo $wo['lang']['movies'];?>
+			<a href="<?php echo Wo_SeoLink('index.php?link1=streams'); ?>" data-ajax="?link1=streams">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#8d73cc" d="M18,9H16V7H18M18,13H16V11H18M18,17H16V15H18M8,9H6V7H8M8,13H6V11H8M8,17H6V15H8M18,3V5H16V3H8V5H6V3H4V21H6V19H8V21H16V19H18V21H20V3H18Z"></svg><img src="<?php echo $wo['config']['theme_url'];?>/img/sidebar/mentorship.svg"> <?php echo $wo['lang']['streams'];?>
 			</a>
 		</li>
 		<?php } ?>
@@ -219,12 +219,14 @@
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#4caf50" d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"></svg><img src="<?php echo $wo['config']['theme_url'];?>/img/sidebar/job.svg"> Job Board
 			</a>
 		</li> -->
+		<!--
 		<li>
-			<a href="<?php echo Wo_SeoLink('index.php?link1=mentor'); ?>" data-ajax="?link1=mentor">
+			<a href="<?php echo Wo_SeoLink('index.php?link1=streams'); ?>" data-ajax="?link1=mentor">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#4caf50" d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"></svg><img src="<?php echo $wo['config']['theme_url'];?>/img/sidebar/mentorship.svg"> ZOMO Stream
 			</a>
 		</li>
-
+        -->
+		
 		<?php if ($wo['config']['offer_system'] == 1) { ?>
 		<li>
 			<a href="<?php echo Wo_SeoLink('index.php?link1=offers'); ?>" data-ajax="?link1=offers">
