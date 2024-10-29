@@ -11998,10 +11998,6 @@ function Wo_GetAdminPoll($id) {
 function Wo_GetPollsList() {
     global $sqlConnect;
 
-    ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
     $data = array();
     $current_date = date('Y-m-d'); // Get current date
 

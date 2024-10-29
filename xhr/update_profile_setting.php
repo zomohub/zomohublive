@@ -1,12 +1,7 @@
 <?php
 if ($f == "update_profile_setting") {
 
-    // print_r($_POST['user_interest']);
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-    
-    // die();
+
 
     if (isset($_POST['user_id']) && is_numeric($_POST['user_id']) && $_POST['user_id'] > 0 && Wo_CheckSession($hash_id) === true) {
         $Userdata = Wo_UserData($_POST['user_id']);
@@ -182,9 +177,7 @@ if ($f == "update_profile_setting") {
             }
         }
 
-        ini_set('display_errors', '1');
-        ini_set('display_startup_errors', '1');
-        error_reporting(E_ALL);
+
 
   
 

@@ -2983,9 +2983,7 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     if ($s == 'edit_poll') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['poll_id']) && !empty($_POST['poll_title'])) {
                
-            ini_set('display_errors', '1');
-            ini_set('display_startup_errors', '1');
-            error_reporting(E_ALL);
+  
 
             $poll_id = Wo_Secure($_POST['poll_id']); // Get poll ID to update
     
