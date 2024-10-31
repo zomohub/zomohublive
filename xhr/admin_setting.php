@@ -2942,11 +2942,15 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     //zomo customization 
     if ($s == 'add_new_poll') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['poll_title'])) {
+
+            $dateRange = explode(' - ', $_POST['poll_dates']);
+            $startDate = $dateRange[0]; // '2024-11-17'
+            $endDate = $dateRange[1];
             
             $poll_data = array(
                 'pollTitle' => Wo_Secure($_POST['poll_title']),
-                'startDate' => Wo_Secure($_POST['start_date']),
-                'endDate' => Wo_Secure($_POST['end_date']),
+                'startDate' => Wo_Secure($startDate),
+                'endDate' => Wo_Secure($endDate),
                 'status' => Wo_Secure($_POST['status']),
                 'time' => time(),
                 'registered' => date('Y-m-d'),
@@ -2983,9 +2987,9 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     if ($s == 'edit_poll') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['poll_id']) && !empty($_POST['poll_title'])) {
                
-            ini_set('display_errors', '1');
-            ini_set('display_startup_errors', '1');
-            error_reporting(E_ALL);
+            $dateRange = explode(' - ', $_POST['poll_dates']);
+            $startDate = $dateRange[0]; // '2024-11-17'
+            $endDate = $dateRange[1];
 
             $poll_id = Wo_Secure($_POST['poll_id']); // Get poll ID to update
     
@@ -2996,8 +3000,8 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
                 // Update poll data
                 $poll_data = array(
                     'pollTitle' => Wo_Secure($_POST['poll_title']),
-                    'startDate' => Wo_Secure($_POST['start_date']),
-                    'endDate' => Wo_Secure($_POST['end_date']),
+                    'startDate' => Wo_Secure($startDate),
+                    'endDate' => Wo_Secure($endDate),
                     'status' => Wo_Secure($_POST['status']),
                 );
     

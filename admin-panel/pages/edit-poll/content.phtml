@@ -9,6 +9,23 @@ if (empty($poll)) {
    exit();
 }
 
+$Wo_GetAdminPolls = Wo_GetAdminPolls();
+
+foreach($Wo_GetAdminPolls as $get_Poll)
+{
+
+    if($poll['id'] ==  $get_Poll['id'])
+    {
+        continue;
+    }
+    $poll_dates[] = array(
+        'start_date' => $get_Poll['startDate'],
+        'end_date' => $get_Poll['endDate'],
+    );
+}
+
+
+
 ?>
 
 <div class="container-fluid">
@@ -45,14 +62,25 @@ if (empty($poll)) {
                             
                             <div class="col-md-6 form-group">
                                 <div class="form-line">
-                                    <label class="form-label">Start Date</label>
-                                    <input type="date" id="start_date" name="start_date" class="form-control" value="<?php echo $poll['startDate'] ?>" required>
+                                    <label class="form-label">Start Date</label><br>
+                                    <?php echo $poll['startDate'] ?>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="form-line">
-                                    <label class="form-label">End Time</label>
-                                    <input type="date" id="end_date" name="end_date" class="form-control" value="<?php echo $poll['endDate'] ?>" required>
+                                    <label class="form-label">End Time</label><br>
+                                    <?php echo $poll['endDate'] ?>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="col-md-12 form-group">
+                                <div class="form-line">
+                                    <label class="form-label">Start & End Date</label>
+                                    <input type="text" class="form-control" id="poll_dates" name="poll_dates" readonly required>
                                 </div>
                             </div>
 
@@ -129,9 +157,60 @@ if (empty($poll)) {
     </div>
     <!-- #END# Vertical Layout -->
 <script>
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('start_date').setAttribute('min', today);
-    document.getElementById('end_date').setAttribute('min', today);
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Convert PHP poll_dates array to JavaScript
+    let disabledRanges = <?php echo !empty($poll_dates) ? json_encode($poll_dates) : '[]'; ?>.map(range => ({
+        start: moment(range.start_date, "YYYY-MM-DD"),
+        end: moment(range.end_date, "YYYY-MM-DD")
+    }));
+
+    // Check if a date is within any disabled range
+    function isDateInDisabledRange(date) {
+        return disabledRanges.some(range => date.isBetween(range.start, range.end, null, '[]'));
+    }
+
+    // Get the nearest disabled range start date after the selected start date
+    function getNearestDisabledRangeStart(startDate) {
+        let nearestStartDate = null;
+        disabledRanges.forEach(range => {
+            if (range.start.isAfter(startDate) && (!nearestStartDate || range.start.isBefore(nearestStartDate))) {
+                nearestStartDate = range.start.clone();
+            }
+        });
+        return nearestStartDate;
+    }
+
+    // Initialize the Daterangepicker
+    $('#poll_dates').daterangepicker({
+        autoApply: true,
+        minDate: moment(),
+        isInvalidDate: function(date) {
+            return isDateInDisabledRange(date);
+        },
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
+
+    // Restrict the end date based on nearest disabled range
+    $('#poll_dates').on('apply.daterangepicker', function(ev, picker) {
+        let startDate = picker.startDate;
+        let nearestDisabledStart = getNearestDisabledRangeStart(startDate);
+
+        // Set the max end date based on the nearest disabled range
+        if (nearestDisabledStart) {
+            let maxEndDate = nearestDisabledStart.clone().subtract(1, 'days');
+            picker.setEndDate(maxEndDate.isAfter(startDate) ? maxEndDate : startDate);
+        }
+
+        // Update the input field with the selected date range
+        $('#poll_dates').val(startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+    });
+});
+
+
+
 
 $(function() {
     var form_add_settings = $('form.add-settings');

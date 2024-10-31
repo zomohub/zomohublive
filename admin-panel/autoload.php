@@ -245,6 +245,10 @@ if (!empty($_COOKIE['mode']) && $_COOKIE['mode'] == 'night') {
     <!-- Daterangepicker -->
     <script src="<?php echo(Wo_LoadAdminLink('vendors/datepicker/daterangepicker.js')) ?>"></script>
 
+    
+    <!-- Moment -->
+    <script src="<?php echo(Wo_LoadAdminLink('vendors/fullcalendar/moment.min.js')) ?>"></script>
+
     <!-- DataTable -->
     <script src="<?php echo(Wo_LoadAdminLink('vendors/dataTable/datatables.min.js')) ?>"></script>
 
