@@ -24,7 +24,7 @@ foreach($Wo_GetAdminPolls as $get_Poll)
     );
 }
 
-
+print_r($poll_dates);
 
 ?>
 
@@ -196,18 +196,24 @@ document.addEventListener("DOMContentLoaded", function() {
     // Restrict the end date based on nearest disabled range
     $('#poll_dates').on('apply.daterangepicker', function(ev, picker) {
         let startDate = picker.startDate;
+        let userSelectedEndDate = picker.endDate;
         let nearestDisabledStart = getNearestDisabledRangeStart(startDate);
 
-        // Set the max end date based on the nearest disabled range
-        if (nearestDisabledStart) {
+        // Check if there's a disabled date between the start date and the user-selected end date
+        if (nearestDisabledStart && userSelectedEndDate.isSameOrAfter(nearestDisabledStart)) {
+            // If a disabled date range exists, adjust end date to the day before the nearest disabled start date
             let maxEndDate = nearestDisabledStart.clone().subtract(1, 'days');
             picker.setEndDate(maxEndDate.isAfter(startDate) ? maxEndDate : startDate);
+        } else {
+            // No disabled date range found, apply the user-selected end date
+            picker.setEndDate(userSelectedEndDate);
         }
 
-        // Update the input field with the selected date range
+        // Update the input field with the final selected date range
         $('#poll_dates').val(startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
     });
 });
+
 
 
 
