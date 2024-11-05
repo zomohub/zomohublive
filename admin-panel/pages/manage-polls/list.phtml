@@ -1,8 +1,18 @@
 <tr class="setting-postlist" id="<?php echo $wo['poll']['id'];?>" data_selected="<?php echo($wo['poll']['id']) ?>">
    <td><?php echo $wo['poll']['id'];?></td>
    <td><?php echo $wo['poll']['pollTitle'];?></td>
-   <td><?php echo $wo['poll']['startDate'];?></td>
-   <td><?php echo $wo['poll']['endDate'];?></td>
+   <td>
+   <?php $date = $wo['poll']['startDate'];
+$formattedDate = DateTime::createFromFormat('Y-m-d', $date)->format('d M, Y');
+echo $formattedDate; // Outputs: 04 Nov 2024
+ ?>   
+</td>
+   <td>
+   <?php $date = $wo['poll']['endDate'];
+$formattedDate = DateTime::createFromFormat('Y-m-d', $date)->format('d M, Y');
+echo $formattedDate; // Outputs: 04 Nov 2024
+ ?>  
+</td>
    <td class="monthly-poll-container">
       <ul>
       <?php 

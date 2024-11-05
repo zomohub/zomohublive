@@ -57,7 +57,8 @@ foreach($Wo_GetAdminPolls as $get_Poll)
                                 <input type="text" id="poll_title" name="poll_title" class="form-control" value="<?php echo $poll['pollTitle'] ?>" required>
                             </div>
                         </div>
-                        <div class="row">
+
+                        <!-- <div class="row">
                             
                             <div class="col-md-6 form-group">
                                 <div class="form-line">
@@ -72,9 +73,26 @@ foreach($Wo_GetAdminPolls as $get_Poll)
                                 </div>
                             </div>
 
-                        </div>
+                        </div> -->
 
                         <div class="row">
+                            
+                            <div class="col-md-6 form-group">
+                                <div class="form-line">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="text" class="form-control" id="poll_start_date" name="poll_start_date" value="<?php echo $poll['startDate'] ?>" readonly required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <div class="form-line">
+                                    <label class="form-label">End Time</label>
+                                    <input type="text" class="form-control" id="poll_end_date" name="poll_end_date" value="<?php echo $poll['endDate'] ?>" readonly required>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- <div class="row">
                             
                             <div class="col-md-12 form-group">
                                 <div class="form-line">
@@ -83,7 +101,7 @@ foreach($Wo_GetAdminPolls as $get_Poll)
                                 </div>
                             </div>
 
-                        </div>
+                        </div> -->
                         
                         <!-- <div class="form-group form-float">
                             <div class="form-line">
@@ -156,6 +174,98 @@ foreach($Wo_GetAdminPolls as $get_Poll)
     </div>
     <!-- #END# Vertical Layout -->
 <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Convert PHP poll_dates array to JavaScript
+    let disabledRanges = <?php echo !empty($poll_dates) ? json_encode($poll_dates) : '[]'; ?>.map(range => ({
+        start: moment(range.start_date, "YYYY-MM-DD"),
+        end: moment(range.end_date, "YYYY-MM-DD")
+    }));
+
+    // Set initial values for start and end date fields from PHP (edit mode)
+    let initialStartDate = moment("<?php echo $poll['startDate'] ?? ''; ?>", "YYYY-MM-DD");
+    let initialEndDate = moment("<?php echo $poll['endDate'] ?? ''; ?>", "YYYY-MM-DD");
+
+    // Check if a date is within any disabled range
+    function isDateInDisabledRange(date) {
+        return disabledRanges.some(range => date.isBetween(range.start, range.end, null, '[]'));
+    }
+
+    // Get the nearest disabled range start date after the selected start date
+    function getNearestDisabledRangeStart(startDate) {
+        let nearestStartDate = null;
+        disabledRanges.forEach(range => {
+            if (range.start.isAfter(startDate) && (!nearestStartDate || range.start.isBefore(nearestStartDate))) {
+                nearestStartDate = range.start.clone();
+            }
+        });
+        return nearestStartDate;
+    }
+
+    // Initialize the Daterangepicker for start date
+    $('#poll_start_date').daterangepicker({
+        singleDatePicker: true,
+        autoApply: true,
+        minDate: moment(),
+        startDate: initialStartDate.isValid() ? initialStartDate : moment(),
+        isInvalidDate: function(date) {
+            return isDateInDisabledRange(date);
+        },
+        locale: {
+            format: 'DD-MM-YYYY' // Updated date format
+        }
+    });
+
+    // Initialize the Daterangepicker for end date with month navigation enabled
+    $('#poll_end_date').daterangepicker({
+        singleDatePicker: true,
+        autoApply: true,
+        showDropdowns: true,
+        minDate: initialStartDate.isValid() ? initialStartDate.clone().add(1, 'days') : moment().add(1, 'days'),
+        startDate: initialEndDate.isValid() ? initialEndDate : moment().add(1, 'days'),
+        isInvalidDate: function(date) {
+            return isDateInDisabledRange(date);
+        },
+        locale: {
+            format: 'DD-MM-YYYY' // Updated date format
+        }
+    });
+
+    // Update the end date picker based on the start date selection
+    $('#poll_start_date').on('apply.daterangepicker', function(ev, picker) {
+        let startDate = picker.startDate;
+        let nearestDisabledStart = getNearestDisabledRangeStart(startDate);
+
+        // Set minDate and maxDate for the end date picker based on start date and nearest disabled range
+        let minEndDate = startDate.clone().add(1, 'days');
+        let maxEndDate = nearestDisabledStart ? nearestDisabledStart.clone().subtract(1, 'days') : null;
+
+        $('#poll_end_date').daterangepicker({
+            singleDatePicker: true,
+            autoApply: true,
+            showDropdowns: true, // Enable month and year navigation
+            minDate: minEndDate,
+            maxDate: maxEndDate,
+            startDate: minEndDate,
+            isInvalidDate: function(date) {
+                return isDateInDisabledRange(date);
+            },
+            locale: {
+                format: 'DD-MM-YYYY' // Updated date format
+            }
+        });
+
+        // Update start date field
+        $('#poll_start_date').val(startDate.format('DD-MM-YYYY'));
+    });
+
+    // Handle the end date selection to finalize the value
+    $('#poll_end_date').on('apply.daterangepicker', function(ev, picker) {
+        let endDate = picker.startDate; // Since single date picker, startDate is the selected date
+        $('#poll_end_date').val(endDate.format('DD-MM-YYYY'));
+    });
+});
+
 
 document.addEventListener("DOMContentLoaded", function() {
     // Convert PHP poll_dates array to JavaScript
