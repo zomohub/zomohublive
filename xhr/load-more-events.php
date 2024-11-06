@@ -5,7 +5,8 @@ if ($f == "load-more-events") {
     $data = array(
         'status' => 404,
         "html" => $wo['lang']['no_result'],
-        "is_last_page" => false
+        "is_last_page" => false,
+        "count" => 0
     );
 
     if (isset($_GET['offset']) && is_numeric($_GET['offset'])) {
@@ -23,7 +24,8 @@ if ($f == "load-more-events") {
                 $data = array(
                     'status' => 200,
                     "html" => $html,
-                    "is_last_page" => count($events) < $limit // Set true if fewer than limit events are returned
+                    "is_last_page" => count($events) < $limit, // Set true if fewer than limit events are returned
+                    "count" => count($events) // Return the number of events loaded
                 );
             }
         } else if ($s == "going") {
@@ -35,7 +37,8 @@ if ($f == "load-more-events") {
                 $data = array(
                     'status' => 200,
                     "html" => $html,
-                    "is_last_page" => count($events) < $limit
+                    "is_last_page" => count($events) < $limit,
+                    "count" => count($events)
                 );
             }
         } else if ($s == "invited") {
@@ -47,7 +50,8 @@ if ($f == "load-more-events") {
                 $data = array(
                     'status' => 200,
                     "html" => $html,
-                    "is_last_page" => count($events) < $limit
+                    "is_last_page" => count($events) < $limit,
+                    "count" => count($events)
                 );
             }
         } else if ($s == "interested") {
@@ -59,7 +63,8 @@ if ($f == "load-more-events") {
                 $data = array(
                     'status' => 200,
                     "html" => $html,
-                    "is_last_page" => count($events) < $limit
+                    "is_last_page" => count($events) < $limit,
+                    "count" => count($events)
                 );
             }
         } else if ($s == "past") {
@@ -71,7 +76,8 @@ if ($f == "load-more-events") {
                 $data = array(
                     'status' => 200,
                     "html" => $html,
-                    "is_last_page" => count($events) < $limit
+                    "is_last_page" => count($events) < $limit,
+                    "count" => count($events)
                 );
             }
         }

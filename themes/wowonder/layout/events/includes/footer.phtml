@@ -56,10 +56,13 @@
 			})
 		});
 
-		let eventCount = 0; // Initialize with 0
+		let eventCount = 10; // Initialize to 10 if the initial 10 items are already loaded on page load
 
 $(".load-more-events").click(function(event) {
     let type = $(this).attr('data-events-type');
+    
+    console.log("Sending AJAX with offset:", eventCount); // Log offset for debugging
+
     $.ajax({
         url: Wo_Ajax_Requests_File(),
         type: 'GET',
@@ -67,12 +70,20 @@ $(".load-more-events").click(function(event) {
         data: {
             f: 'load-more-events',
             s: type,
-            offset: eventCount // Pass the count of events already loaded
+            offset: eventCount // Send the correct offset
         },
         success: function(data) {
+            console.log("Received data:", data);
+
             if (data.status === 200) {
-                $("#events-" + type).append(data.html); // Append only new events
-                eventCount += 10; // Increment by the number of events per page
+                // Append only the newly fetched events
+                $("#events-" + type).append(data.html);
+
+                // Increment eventCount by the actual number of newly loaded events
+                eventCount += data.count;
+                console.log("Updated eventCount:", eventCount); // Log the updated count
+
+                // Hide "Load More" if there are no further events
                 if (data.is_last_page) {
                     $(".load-more-events").hide(); // Hide button if it’s the last page
                 }
@@ -82,6 +93,11 @@ $(".load-more-events").click(function(event) {
         }
     });
 });
+
+
+
+
+
 
 
 

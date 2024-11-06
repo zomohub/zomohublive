@@ -3242,10 +3242,8 @@ function Wo_GetEvents($args = array()) {
     // Construct the LIMIT clause
     $limitClause = " LIMIT {$limit} OFFSET {$offset} ";
 
-    // Base SQL query
     $sql = "SELECT * FROM " . T_EVENTS;
 
-    // Additional conditions based on user visibility settings
     if ($wo['config']['events_visibility'] == 1) {
         $user = $wo['user']['id'];
         if (empty($args['is_admin'])) {
@@ -3259,11 +3257,9 @@ function Wo_GetEvents($args = array()) {
         $sql .= " ORDER BY `id` DESC {$limitClause}";
     }
 
-    // Execute query
     $query = mysqli_query($sqlConnect, $sql);
     $data = array();
 
-    // Process results
     if ($query && mysqli_num_rows($query) > 0) {
         while ($fetched_data = mysqli_fetch_assoc($query)) {
             $fetched_data['user_data'] = Wo_UserData($fetched_data['poster_id']);
@@ -3273,9 +3269,9 @@ function Wo_GetEvents($args = array()) {
             $data[] = $fetched_data;
         }
     }
-
     return $data;
 }
+
 
 
 function Wo_GetSuggestedEvents($args = array()) {
