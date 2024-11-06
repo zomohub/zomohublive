@@ -137,7 +137,7 @@ function uploadCroppedImage($croppedImageData, $eventId) {
         }
 
         // Update the event's cover column with the image path in the database
-        $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($eventId);
+        $db_update_query = "UPDATE Wo_Events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($eventId);
         $db_result = mysqli_query($sqlConnect, $db_update_query);
         
         if (!$db_result) {

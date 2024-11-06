@@ -112,7 +112,7 @@ if ($f == "insert-event") {
 
 
                             // Update the event's cover column with the image path
-                            $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
+                            $db_update_query = "UPDATE Wo_Events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
                             $db_result = mysqli_query($sqlConnect, $db_update_query);
                             if ($db_result) {
                                 error_log('Database updated successfully with the cropped image path.');
@@ -176,7 +176,7 @@ if ($f == "insert-event") {
                         
 
                         // Update the event's cover column with the image path
-                        $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
+                        $db_update_query = "UPDATE Wo_Events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
                         $db_result = mysqli_query($sqlConnect, $db_update_query);
                         if ($db_result) {
                             error_log('Database updated successfully with the normal image path.');
