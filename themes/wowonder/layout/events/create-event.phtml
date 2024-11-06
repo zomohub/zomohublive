@@ -191,45 +191,46 @@ $fields = Wo_GetWelcomeFileds();
 				});
 			}
 		});
-	$('#insert-event').on('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+	
+		$('#insert-event').on('submit', function(event) {
+			event.preventDefault(); // Prevent default form submission
 
-    // Create a FormData object to capture all form data
-    var formData = new FormData(this);
+			var formData = new FormData(this);
+			formData.append('cropped_image', $('#cropped_image').val());
 
-    // Manually append the cropped image data from the hidden input
-    formData.append('cropped_image', $('#cropped_image').val());
+			$.ajax({
+				url: Wo_Ajax_Requests_File() + '?f=insert-event',
+				type: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$('#insert-event').find('.add_wow_loader').addClass('btn-loading').prop('disabled', true);
+				},
+				success: function(data) {
+					console.log("Response Data:", data); // Log for debugging
 
-    // Debug: Log all form data before submitting
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-    }
+					if (data.status === 200) {
+						// Display the success message and redirect
+						$("#event-alert").html('<div class="alert alert-success">' + data.message + '</div>');
+						setTimeout(function() {
+							window.location.href = data.url;
+						}, 1500); // Delay to show success message before redirect
+					} else if (data.message) {
+						$("#event-alert").html('<div class="alert alert-danger">' + data.message + '</div>');
+						$('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Error Details:", error);
+					console.error("Response Text:", xhr.responseText); // Debug server response
+					alert('There was an error processing your request. Please try again.');
+					$('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false);
+				}
+			});
+		});
 
-    // Submit the form data via AJAX
-    $.ajax({
-        url: Wo_Ajax_Requests_File() + '?f=insert-event',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        beforeSend: function() {
-            $('#insert-event').find('.add_wow_loader').addClass('btn-loading').prop('disabled', true).off('click');
-        },
-        success: function(data) {
-            if (data['status'] == 200) {
-                $("#event-alert").html('<div class="alert alert-success">' + data['message'] + '</div>');
-                window.location = data['url'];
-            } else if (data['message']) {
-                $("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
-                $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
-            }
-        },
-        error: function() {
-            alert('There was an error processing your request. Please try again.');
-            $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
-        }
-    });
-});
+
 
 
 

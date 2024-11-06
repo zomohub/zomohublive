@@ -80,12 +80,15 @@ function handleImageUploads($eventId, $postData, $fileData) {
 }
 
 function uploadCroppedImage($croppedImageData, $eventId) {
+    global $sqlConnect, $wo;
+
+    // Check if the Base64 string format is correct
     if (preg_match('/^data:image\/(\w+);base64,/', $croppedImageData, $type)) {
-        $type = strtolower($type[1]); // Get the image type (e.g., jpg, png)
+        $type = strtolower($type[1]); // Extract image type (e.g., jpg, png)
 
         // Validate allowed image types
-        if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
-            throw new Exception('Invalid image type. Only JPG and PNG are supported.');
+        if (!in_array($type, ['jpg', 'jpeg', 'png', 'gif'])) {
+            throw new Exception('Invalid image type. Only JPG, PNG, and GIF are supported.');
         }
 
         // Decode the Base64 image data
@@ -104,27 +107,51 @@ function uploadCroppedImage($croppedImageData, $eventId) {
         }
 
         // Generate a unique file name and define the file path
-        $cropped_image_name = 'cropped_' . time() . '_' . uniqid() . '.' . $type;
-        $file_path = $upload_dir . $cropped_image_name;
+        $unique_file_name = 'cropped_' . time() . '_' . uniqid() . '.' . $type;
+        $file_path = $upload_dir . $unique_file_name;
 
         // Save the decoded image data to the file
         if (file_put_contents($file_path, $croppedImageData) === false) {
             throw new Exception('Unable to save cropped image. Please try again.');
         }
 
+        // Verify the file is a valid image
+        $check_file = getimagesize($file_path);
+        if (!$check_file) {
+            unlink($file_path); // Remove invalid file
+            throw new Exception('Invalid image file.');
+        }
+
+        // Resize the image if required
+        $resize_width = 918;  // Example width for resizing
+        $resize_height = 332; // Example height for resizing
+        $quality = $wo['config']['images_quality'];
+        Wo_Resize_Crop_Image($resize_width, $resize_height, $file_path, $file_path, $quality);
+
+        // Check if S3 upload is enabled
+        if ($wo['config']['s3_upload'] == 1) {
+            if (!Wo_UploadToS3($file_path)) {
+                error_log("S3 upload failed for: " . $file_path); // Log if S3 upload fails
+                throw new Exception('Failed to upload image to S3.');
+            }
+        }
+
         // Update the event's cover column with the image path in the database
-        global $sqlConnect;  // Ensure you have access to the database connection
         $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($eventId);
         $db_result = mysqli_query($sqlConnect, $db_update_query);
         
         if (!$db_result) {
-            error_log('Database update failed with error: ' . mysqli_error($sqlConnect));  // Log if DB fails
+            unlink($file_path); // Remove the file if DB update fails
+            error_log('Database update failed: ' . mysqli_error($sqlConnect));
             throw new Exception('Failed to update the event cover image in the database.');
         }
+
+        return true; // Successfully uploaded, resized, and updated
     } else {
-        throw new Exception('Invalid image data. Please ensure the data is in Base64 format.');
+        throw new Exception('Invalid image data format. Please ensure the data is in Base64 format.');
     }
 }
+
 
 
 

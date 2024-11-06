@@ -101,6 +101,16 @@ if ($f == "insert-event") {
                         if (file_put_contents($file_path, $cropped_image_data) !== false) {
                             error_log('Cropped image successfully saved at: ' . $file_path);
 
+                            // Resize the image if needed
+                            Wo_Resize_Crop_Image(918, 332, $file_path, $file_path, $wo['config']['images_quality']);
+
+                            // Check if S3 upload is enabled
+                           // Check if S3 upload is enabled
+                            if (isset($wo['config']['s3_upload']) && $wo['config']['s3_upload'] == 1) {
+                                Wo_UploadToS3($file_path);
+                            }
+
+
                             // Update the event's cover column with the image path
                             $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
                             $db_result = mysqli_query($sqlConnect, $db_update_query);
@@ -157,6 +167,14 @@ if ($f == "insert-event") {
                     $file_path = $upload_dir . $image_name;
 
                     if (move_uploaded_file($temp_name, $file_path)) {
+                        // Resize the image if needed
+                        Wo_Resize_Crop_Image(918, 332, $file_path, $file_path, $wo['config']['images_quality']);
+
+                        if (isset($wo['config']['s3_upload']) && $wo['config']['s3_upload'] == 1) {
+                            Wo_UploadToS3($file_path);
+                        }
+                        
+
                         // Update the event's cover column with the image path
                         $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($last_id);
                         $db_result = mysqli_query($sqlConnect, $db_update_query);
