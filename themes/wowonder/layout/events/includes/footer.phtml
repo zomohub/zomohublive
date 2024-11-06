@@ -56,27 +56,33 @@
 			})
 		});
 
-		$(".load-more-events").click(function(event) {
-			var last_id = ($(".events-list-wrapper").length > 0) ? $(".events-list-wrapper").last().attr('data-event') : 0;
-			var type    = $(this).attr('data-events-type');
-			$.ajax({
-				url: Wo_Ajax_Requests_File(),
-				type: 'GET',
-				dataType: 'json',
-				data: {f: 'load-more-events',
-					   s:type,
-					   offset:last_id 
-					},
+		let eventCount = 0; // Initialize with 0
 
-				success:function(data){
-					if (data['status'] == 200) {
-						$("#events-" + type).append(data['html'])
-					}else{
-						$(".posts_load").find('.load-more').html(data['html'])
-					}
-				}
-			})
-		});
+$(".load-more-events").click(function(event) {
+    let type = $(this).attr('data-events-type');
+    $.ajax({
+        url: Wo_Ajax_Requests_File(),
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            f: 'load-more-events',
+            s: type,
+            offset: eventCount // Pass the count of events already loaded
+        },
+        success: function(data) {
+            if (data.status === 200) {
+                $("#events-" + type).append(data.html); // Append only new events
+                eventCount += 10; // Increment by the number of events per page
+                if (data.is_last_page) {
+                    $(".load-more-events").hide(); // Hide button if it’s the last page
+                }
+            } else {
+                $(".posts_load").find('.load-more').html(data.html); // Show message if no more events
+            }
+        }
+    });
+});
+
 
 
 
