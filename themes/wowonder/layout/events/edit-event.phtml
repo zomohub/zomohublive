@@ -203,6 +203,31 @@ document.getElementById('cropImage').addEventListener('click', function() {
         });
     }
 });
+$('#update-event').on('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+    var formData = new FormData(this);
+    formData.append('cropped_image', $('#cropped_image').val());
+
+    $.ajax({
+        type: 'POST',
+        url: Wo_Ajax_Requests_File() + '?f=update-event&eid=' + '<?php echo $wo['event']['id']; ?>',
+        data: formData,
+        processData: false, // Important: tell jQuery not to process the data
+        contentType: false, // Important: tell jQuery not to set contentType
+        beforeSend: function() {
+            $('.add_wow_loader').addClass('btn-loading');
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                $("#event-alert").html('<div class="alert alert-success">' + data.message + '</div>');
+                window.location = data.url;
+            } else if (data.message) {
+                $("#event-alert").html('<div class="alert alert-danger">' + data.message + '</div>');
+            }
+            $('.add_wow_loader').removeClass('btn-loading');
+        }
+    });
+});
 
 // AJAX Form Submission
 $('#update-event').ajaxForm({

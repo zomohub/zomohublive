@@ -264,7 +264,7 @@ let countDown = new Date('<?php echo date("m/d/y",strtotime($wo['event']['start_
       let now = new Date().getTime(),
           distance = countDown - now;
 
-      document.getElementById('days').innerHTML = Math.floor(distance / (day)),
+        document.getElementById('days').innerHTML = Math.floor(distance / (day)),
         document.getElementById('hours').innerHTML = Math.floor((distance % (day)) / (hour)),
         document.getElementById('minutes').innerHTML = Math.floor((distance % (hour)) / (minute)),
         document.getElementById('seconds').innerHTML = Math.floor((distance % (minute)) / second);

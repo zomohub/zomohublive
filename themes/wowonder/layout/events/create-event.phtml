@@ -128,91 +128,136 @@ $fields = Wo_GetWelcomeFileds();
 <!-- // zomo  customization end -->
 
 <script>
-	jQuery(document).ready(function($) {
+    jQuery(document).ready(function($) {
+        // zomo customization
+        var cropper;
+        var image = document.getElementById('image');
+        var input = document.getElementById('event-cover');
 
-		// zomo  customization
-		var cropper;
-		var image = document.getElementById('image');
-		var input = document.getElementById('event-cover');
+        input.addEventListener('change', function(e) {
+            var files = e.target.files;
+            var done = function(url) {
+                image.src = url;
+                $('#cropperModal').modal('show');
+            };
+            var reader;
+            var file;
 
-		input.addEventListener('change', function(e) {
-			var files = e.target.files;
-			var done = function(url) {
-				image.src = url;
-				$('#cropperModal').modal('show');
-			};
-			var reader;
-			var file;
-			var url;
+            if (files && files.length > 0) {
+                file = files[0];
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function(e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
 
-			if (files && files.length > 0) {
-				file = files[0];
+        $('#cropperModal').on('shown.bs.modal', function() {
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                viewMode: 3,
+            });
+        }).on('hidden.bs.modal', function() {
+            cropper.destroy();
+            cropper = null;
+        });
 
-				if (URL) {
-					done(URL.createObjectURL(file));
-				} else if (FileReader) {
-					reader = new FileReader();
-					reader.onload = function(e) {
-						done(reader.result);
+		document.getElementById('cropImage').addEventListener('click', function() {
+			var canvas;
+			if (cropper) {
+				canvas = cropper.getCroppedCanvas({
+					width: 800,
+					height: 450,
+				});
+				canvas.toBlob(function(blob) {
+					var reader = new FileReader();
+					reader.readAsDataURL(blob);
+					reader.onloadend = function() {
+						var base64data = reader.result;
+						$("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Cropped Image'>");
+						$('#cropperModal').modal('hide');
+
+						// Set the base64 cropped image data into the hidden input field
+						$('#cropped_image').val(base64data);
+
+						// Debug: Log the value of cropped_image to ensure it has the correct data
+						console.log('Cropped image value set: ', $('#cropped_image').val());
 					};
-					reader.readAsDataURL(file);
-				}
+				});
 			}
 		});
+	$('#insert-event').on('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
 
-		$('#cropperModal').on('shown.bs.modal', function() {
-			cropper = new Cropper(image, {
-				aspectRatio: 16 / 9,
-				viewMode: 3,
-			});
-		}).on('hidden.bs.modal', function() {
-			cropper.destroy();
-			cropper = null;
-		});
+    // Create a FormData object to capture all form data
+    var formData = new FormData(this);
 
-	document.getElementById('cropImage').addEventListener('click', function() {
-    var canvas;
-    if (cropper) {
-        canvas = cropper.getCroppedCanvas({
-            width: 800,
-            height: 450,
-        });
-        canvas.toBlob(function(blob) {
-            var reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function() {
-                var base64data = reader.result;
-                $("#wow_fcov_img_holder").html("<img src='" + base64data + "' alt='Cropped Image'>");
-                $('#cropperModal').modal('hide');
+    // Manually append the cropped image data from the hidden input
+    formData.append('cropped_image', $('#cropped_image').val());
 
-                // Set the base64 cropped image data into the hidden input field
-                $('#cropped_image').val(base64data);
-            };
-        });
+    // Debug: Log all form data before submitting
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
     }
+
+    // Submit the form data via AJAX
+    $.ajax({
+        url: Wo_Ajax_Requests_File() + '?f=insert-event',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+            $('#insert-event').find('.add_wow_loader').addClass('btn-loading').prop('disabled', true).off('click');
+        },
+        success: function(data) {
+            if (data['status'] == 200) {
+                $("#event-alert").html('<div class="alert alert-success">' + data['message'] + '</div>');
+                window.location = data['url'];
+            } else if (data['message']) {
+                $("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+                $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
+            }
+        },
+        error: function() {
+            alert('There was an error processing your request. Please try again.');
+            $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
+        }
+    });
 });
 
 
 
-		// zomo  customization end
-
-		$('#insert-event').ajaxForm({
-			url: Wo_Ajax_Requests_File() + '?f=insert-event',
-			beforeSend: function() {
-				$('#insert-event').find('.add_wow_loader').addClass('btn-loading').prop('disabled', true).off('click');
-			},
-			success: function(data) {
-				if (data['status'] == 200) {
-					$("#event-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
-					window.location = data['url'];
-				}
-				else if (data['message']) {
-					$("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
-					$('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
-				} 
-			}
-		});
-	});
+        $('#insert-event').ajaxForm({
+            url: Wo_Ajax_Requests_File() + '?f=insert-event',
+            beforeSend: function() {
+                // Ensure that the cropped image data is set before submitting
+                if ($('#event-cover').val() && !$('#cropped_image').val()) {
+                    alert('Please crop the image before submitting.');
+                    return false;
+                }
+                $('#insert-event').find('.add_wow_loader').addClass('btn-loading').prop('disabled', true).off('click');
+            },
+            success: function(data) {
+                if (data['status'] == 200) {
+                    $("#event-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+                    window.location = data['url'];
+                } else if (data['message']) {
+                    $("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+                    $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
+                } 
+            },
+            error: function() {
+                alert('There was an error processing your request. Please try again.');
+                $('#insert-event').find('.add_wow_loader').removeClass('btn-loading').prop('disabled', false).on('click');
+            }
+        });
+    });
 </script>
 
 

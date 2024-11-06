@@ -1,111 +1,30 @@
 <?php 
 if ($f == "update-event") {
-    if (true) {
-        if (empty($_POST['event-name']) || empty($_POST['event-locat']) || empty($_POST['event-description'])) {
-            $error = $error_icon . $wo['lang']['please_check_details'];
-        } else {
-            if (strlen($_POST['event-name']) < 10) {
-                $error = $error_icon . $wo['lang']['title_more_than10'];
-            }
-            if (strlen($_POST['event-description']) < 32) {
-                $error = $error_icon . $wo['lang']['desc_more_than32'];
-            }
-            if (empty($_POST['event-start-date'])) {
-                $error = $error_icon . $wo['lang']['please_check_details'];
-            }
-            if (empty($_POST['event-end-date'])) {
-                $error = $error_icon . $wo['lang']['please_check_details'];
-            }
-            if (empty($_POST['event-start-time'])) {
-                $error = $error_icon . $wo['lang']['please_check_details'];
-            }
-            if (empty($_POST['event-end-time'])) {
-                $error = $error_icon . $wo['lang']['please_check_details'];
-            }
-            // Simplified date comparison logic
-            $date_start = explode('-', $_POST['event-start-date']);
-            $date_end = explode('-', $_POST['event-end-date']);
-            if ($date_start[0] > $date_end[0] || ($date_start[0] == $date_end[0] && $date_start[1] > $date_end[1]) || ($date_start[0] == $date_end[0] && $date_start[1] == $date_end[1] && $date_start[2] > $date_end[2])) {
-                $error = $error_icon . $wo['lang']['please_check_details'];
-            }
-        }
-
-        if (empty($error) && isset($_GET['eid']) && is_numeric($_GET['eid'])) {
-            // Update event data
-            $registration_data = array(
-                'name' => Wo_Secure($_POST['event-name']),
-                'location' => Wo_Secure($_POST['event-locat']),
-                'description' => Wo_Secure($_POST['event-description']),
-                'start_date' => Wo_Secure($_POST['event-start-date']),
-                'start_time' => Wo_Secure($_POST['event-start-time']),
-                'end_date' => Wo_Secure($_POST['event-end-date']),
-                'end_time' => Wo_Secure($_POST['event-end-time'])
-            );
+    if (checkUserSession()) { // Placeholder for actual session check
+        $error = validateEventInput($_POST);
+        if (!$error && isset($_GET['eid']) && is_numeric($_GET['eid'])) {
+            // Assuming Wo_Secure sanitizes the inputs
+            $registration_data = prepareEventData($_POST);
             $result = Wo_UpdateEvent($_GET['eid'], $registration_data);
 
             if ($result) {
-                // Handle cropped image if it is provided
-                if (!empty($_POST['cropped_image'])) {
-                    $cropped_image_data = $_POST['cropped_image'];
-
-                    // Extract the base64 data
-                    if (preg_match('/^data:image\/(\w+);base64,/', $cropped_image_data, $type)) {
-                        $cropped_image_data = substr($cropped_image_data, strpos($cropped_image_data, ',') + 1);
-                        $type = strtolower($type[1]); // jpg, png, gif
-
-                        if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
-                            throw new \Exception('Invalid image type');
-                        }
-
-                        $cropped_image_data = base64_decode($cropped_image_data);
-
-                        if ($cropped_image_data === false) {
-                            throw new \Exception('Base64 decode failed');
-                        }
-                    } else {
-                        throw new \Exception('Did not match data URI with image data');
-                    }
-
-                    // Generate a unique name for the image
-                    $cropped_image_name = 'cropped_' . time() . '.' . $type;
-
-                    // Define the file path
-                    $file_path = 'uploads/events/' . $cropped_image_name;
-
-                    // Save the image
-                    if (file_put_contents($file_path, $cropped_image_data) === false) {
-                        throw new \Exception('Failed to save the cropped image file');
-                    }
-
-                    // Update the event cover
-                    Wo_UploadImage($file_path, $cropped_image_name, 'cover', 'image/' . $type, $_GET['eid'], 'event');
-                } 
-                // Handle the regular image file upload if no cropped image
-                else if (!empty($_FILES["event-cover"]["tmp_name"])) {
-                    $temp_name = $_FILES["event-cover"]["tmp_name"];
-                    $file_name = $_FILES["event-cover"]["name"];
-                    $file_type = $_FILES['event-cover']['type'];
-                    $file_size = $_FILES["event-cover"]["size"];
-                    Wo_UploadImage($temp_name, $file_name, 'cover', $file_type, $_GET['eid'], 'event');
-                }
-
-                // Send success response
-                $data = array(
+                handleImageUploads($_GET['eid'], $_POST, $_FILES);
+                $data = [
                     'message' => $success_icon . $wo['lang']['event_saved'],
                     'status' => 200,
                     'url' => Wo_SeoLink("index.php?link1=show-event&eid=" . $_GET['eid'])
-                );
+                ];
             } else {
-                $data = array(
+                $data = [
                     'status' => 500,
                     'message' => $error_icon . $wo['lang']['event_save_error']
-                );
+                ];
             }
         } else {
-            $data = array(
+            $data = [
                 'status' => 500,
                 'message' => $error
-            );
+            ];
         }
     }
 
@@ -113,3 +32,109 @@ if ($f == "update-event") {
     echo json_encode($data);
     exit();
 }
+
+function checkUserSession() {
+    // Implement actual session validation logic
+    return true;
+}
+
+function validateEventInput($inputs) {
+    $required_fields = ['event-name', 'event-locat', 'event-description', 'event-start-date', 'event-end-date', 'event-start-time', 'event-end-time'];
+    foreach ($required_fields as $field) {
+        if (empty($inputs[$field])) {
+            return $error_icon . $wo['lang']['please_check_details'];
+        }
+    }
+    if (strlen($inputs['event-name']) < 10) {
+        return $error_icon . $wo['lang']['title_more_than10'];
+    }
+    if (strlen($inputs['event-description']) < 32) {
+        return $error_icon . $wo['lang']['desc_more_than32'];
+    }
+    $date_start = new DateTime($inputs['event-start-date']);
+    $date_end = new DateTime($inputs['event-end-date']);
+    if ($date_start > $date_end) {
+        return $error_icon . $wo['lang']['please_check_details'];
+    }
+    return null;
+}
+
+function prepareEventData($inputs) {
+    return array(
+        'name' => Wo_Secure($inputs['event-name']),
+        'location' => Wo_Secure($inputs['event-locat']),
+        'description' => Wo_Secure($inputs['event-description']),
+        'start_date' => Wo_Secure($inputs['event-start-date']),
+        'start_time' => Wo_Secure($inputs['event-start-time']),
+        'end_date' => Wo_Secure($inputs['event-end-date']),
+        'end_time' => Wo_Secure($inputs['event-end-time'])
+    );
+}
+
+function handleImageUploads($eventId, $postData, $fileData) {
+    if (!empty($postData['cropped_image'])) {
+        uploadCroppedImage($postData['cropped_image'], $eventId);
+    } elseif (!empty($fileData["event-cover"]["tmp_name"])) {
+        uploadRegularImage($fileData["event-cover"], $eventId);
+    }
+}
+
+function uploadCroppedImage($croppedImageData, $eventId) {
+    if (preg_match('/^data:image\/(\w+);base64,/', $croppedImageData, $type)) {
+        $type = strtolower($type[1]); // Get the image type (e.g., jpg, png)
+
+        // Validate allowed image types
+        if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+            throw new Exception('Invalid image type. Only JPG and PNG are supported.');
+        }
+
+        // Decode the Base64 image data
+        $croppedImageData = base64_decode(substr($croppedImageData, strpos($croppedImageData, ',') + 1));
+        if ($croppedImageData === false) {
+            throw new Exception('Base64 decode failed. Please check the image data.');
+        }
+
+        // Create upload directory based on year and month
+        $year = date('Y');
+        $month = date('m');
+        $upload_dir = "upload/photos/{$year}/{$month}/";
+        
+        if (!is_dir($upload_dir) && !mkdir($upload_dir, 0777, true)) {
+            throw new Exception('Failed to create upload directory.');
+        }
+
+        // Generate a unique file name and define the file path
+        $cropped_image_name = 'cropped_' . time() . '_' . uniqid() . '.' . $type;
+        $file_path = $upload_dir . $cropped_image_name;
+
+        // Save the decoded image data to the file
+        if (file_put_contents($file_path, $croppedImageData) === false) {
+            throw new Exception('Unable to save cropped image. Please try again.');
+        }
+
+        // Update the event's cover column with the image path in the database
+        global $sqlConnect;  // Ensure you have access to the database connection
+        $db_update_query = "UPDATE wo_events SET cover = '" . Wo_Secure($file_path) . "' WHERE id = " . Wo_Secure($eventId);
+        $db_result = mysqli_query($sqlConnect, $db_update_query);
+        
+        if (!$db_result) {
+            error_log('Database update failed with error: ' . mysqli_error($sqlConnect));  // Log if DB fails
+            throw new Exception('Failed to update the event cover image in the database.');
+        }
+    } else {
+        throw new Exception('Invalid image data. Please ensure the data is in Base64 format.');
+    }
+}
+
+
+
+
+
+function uploadRegularImage($fileInfo, $eventId) {
+    $temp_name = $fileInfo["tmp_name"];
+    $file_name = $fileInfo["name"];
+    $file_type = $fileInfo['type'];
+    $file_size = $fileInfo["size"];
+    Wo_UploadImage($temp_name, $file_name, 'cover', $file_type, $eventId, 'event');
+}
+?>
