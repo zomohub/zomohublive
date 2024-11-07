@@ -56,27 +56,51 @@
 			})
 		});
 
-		$(".load-more-events").click(function(event) {
-			var last_id = ($(".events-list-wrapper").length > 0) ? $(".events-list-wrapper").last().attr('data-event') : 0;
-			var type    = $(this).attr('data-events-type');
-			$.ajax({
-				url: Wo_Ajax_Requests_File(),
-				type: 'GET',
-				dataType: 'json',
-				data: {f: 'load-more-events',
-					   s:type,
-					   offset:last_id 
-					},
+		let eventCount = 10; // Initialize to 10 if the initial 10 items are already loaded on page load
 
-				success:function(data){
-					if (data['status'] == 200) {
-						$("#events-" + type).append(data['html'])
-					}else{
-						$(".posts_load").find('.load-more').html(data['html'])
-					}
-				}
-			})
-		});
+$(".load-more-events").click(function(event) {
+    let type = $(this).attr('data-events-type');
+    
+    console.log("Sending AJAX with offset:", eventCount); // Log offset for debugging
+
+    $.ajax({
+        url: Wo_Ajax_Requests_File(),
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            f: 'load-more-events',
+            s: type,
+            offset: eventCount // Send the correct offset
+        },
+        success: function(data) {
+            console.log("Received data:", data);
+
+            if (data.status === 200) {
+                // Append only the newly fetched events
+                $("#events-" + type).append(data.html);
+
+                // Increment eventCount by the actual number of newly loaded events
+                eventCount += data.count;
+                console.log("Updated eventCount:", eventCount); // Log the updated count
+
+                // Hide "Load More" if there are no further events
+                if (data.is_last_page) {
+                    $(".load-more-events").hide(); // Hide button if it’s the last page
+                }
+            } else {
+                $(".posts_load").find('.load-more').html(data.html); // Show message if no more events
+            }
+        }
+    });
+});
+
+
+
+
+
+
+
+
 
 
 	});

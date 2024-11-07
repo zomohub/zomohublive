@@ -1,0 +1,23 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - release_phase2  # This triggers the action on every push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Add the private SSH key as a secret in GitHub
+
+    - name: Deploy code via SSH
+      run: |
+        ssh -o StrictHostKeyChecking=no zomohubc@107.6.161.242 "cd /home/zomohubc/public_html/phase2 && git pull origin release_phase2"

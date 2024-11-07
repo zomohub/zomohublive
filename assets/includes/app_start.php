@@ -234,6 +234,8 @@ if (isset($_GET["lang"]) and !empty($_GET["lang"])) {
         }
     }
 }
+
+
 if ($wo["loggedin"] == true && $wo["config"]["cache_sidebar"] == 1) {
     if (!empty($_COOKIE["last_sidebar_update"])) {
         if ($_COOKIE["last_sidebar_update"] < time() - 120) {

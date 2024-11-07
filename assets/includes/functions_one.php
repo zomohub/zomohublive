@@ -11996,21 +11996,22 @@ function Wo_GetAdminPoll($id) {
 
 
 function Wo_GetPollsList() {
+
+
     global $sqlConnect;
 
     $data = array();
     $current_date = date('Y-m-d'); // Get current date
-
-    // Query to get all polls where startDate <= today and endDate >= today and status is true
+    
     $query = "SELECT * FROM " . T_ADMIN_POLLS . " 
               WHERE `startDate` <= '{$current_date}' 
               AND `endDate` >= '{$current_date}' 
               AND `status` = '1' 
-              ORDER BY `id` DESC";
-
+              ORDER BY `id` DESC LIMIT 1";
+    
     $sql_query = mysqli_query($sqlConnect, $query);
-
-    if (mysqli_num_rows($sql_query)) {
+    
+    if (mysqli_num_rows($sql_query) > 0) {
         while ($poll = mysqli_fetch_assoc($sql_query)) {
             // For each poll, get its answers
             $poll_id = $poll['id'];
@@ -12018,7 +12019,7 @@ function Wo_GetPollsList() {
             $data[] = $poll;
         }
     }
-
+    
     return $data;
 }
 

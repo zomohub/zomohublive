@@ -6890,6 +6890,25 @@ function Wo_GetCategoriesKeys($table) {
     }
     return false;
 }
+
+function Wo_GetProfessionalTitlesKeys($table) {
+    global $sqlConnect, $wo;
+    $data       = array();
+    $categories = mysqli_query($sqlConnect, "SELECT * FROM " . $table);
+    if (mysqli_num_rows($categories)) {
+        while ($fetched_data = mysqli_fetch_assoc($categories)) {
+            $data[$fetched_data["id"]] = $fetched_data["lang_key"];
+        }
+        if ($table == "wo_products_categories") {
+            $data[0] = "all_";
+        } else {
+            $data[1] = "other";
+        }
+        return $data;
+    }
+    return false;
+}
+
 function Wo_GetPokeById($id) {
     global $sqlConnect, $wo;
     if (empty($id) || !is_numeric($id) || $id < 1) {

@@ -3229,48 +3229,51 @@ function Wo_UnsetEventGoingUsers($event_id) {
 }
 function Wo_GetEvents($args = array()) {
     global $sqlConnect, $wo;
-    // if ($wo['loggedin'] == false) {
-    //     return false;
-    // }
+
     $options = array(
-        "offset" => 0,
+        "offset" => 0, // Row count to skip
         "limit" => 10,
         'is_admin' => 0
     );
-    $args    = array_merge($options, $args);
-    $sub_q   = "";
-    $total   = "";
-    $offset  = $args['offset'];
-    $limit   = $args['limit'];
-    if ($offset > 0) {
-        $sub_q .= " AND `id` < {$offset} AND `id` <> {$offset}  ";
-    }
-    if ($limit && is_numeric($limit)) {
-        $total = " LIMIT $limit  ";
-    }
+    $args = array_merge($options, $args);
+    $offset = (int) $args['offset']; // Use offset as row count
+    $limit = (int) $args['limit'];
+
+    // Construct the LIMIT clause
+    $limitClause = " LIMIT {$limit} OFFSET {$offset} ";
+
     $sql = "SELECT * FROM " . T_EVENTS;
+
     if ($wo['config']['events_visibility'] == 1) {
         $user = $wo['user']['id'];
         if (empty($args['is_admin'])) {
             $sql .= " WHERE `id` NOT IN
-        (SELECT `event_id` FROM " . T_EVENTS_GOING . " WHERE `user_id` = '$user')
-        AND `id` NOT IN (SELECT `event_id` FROM " . T_EVENTS_INT . " WHERE `user_id` = '$user') AND `end_date` >= CURDATE() {$sub_q} ORDER BY `id` DESC {$total} ";
+                (SELECT `event_id` FROM " . T_EVENTS_GOING . " WHERE `user_id` = '$user')
+                AND `id` NOT IN (SELECT `event_id` FROM " . T_EVENTS_INT . " WHERE `user_id` = '$user') 
+                AND `end_date` >= CURDATE() 
+                ORDER BY `id` DESC {$limitClause}";
         }
+    } else {
+        $sql .= " ORDER BY `id` DESC {$limitClause}";
     }
+
     $query = mysqli_query($sqlConnect, $sql);
-    $data  = array();
-    if (mysqli_num_rows($query)) {
+    $data = array();
+
+    if ($query && mysqli_num_rows($query) > 0) {
         while ($fetched_data = mysqli_fetch_assoc($query)) {
-            $fetched_data['user_data']  = Wo_UserData($fetched_data['poster_id']);
-            //$fetched_data['start_date'] = date('F j Y, g:i a', strtotime($fetched_data['start_date'] . $fetched_data['start_time']));
+            $fetched_data['user_data'] = Wo_UserData($fetched_data['poster_id']);
             $fetched_data['start_date'] = date($wo['config']['date_style'], strtotime($fetched_data['start_date'] . $fetched_data['start_time']));
-            $fetched_data['cover']      = Wo_GetMedia($fetched_data['cover']);
-            $fetched_data['url']        = Wo_SeoLink("index.php?link1=show-event&eid=" . $fetched_data['id']);
-            $data[]                     = $fetched_data;
+            $fetched_data['cover'] = Wo_GetMedia($fetched_data['cover']);
+            $fetched_data['url'] = Wo_SeoLink("index.php?link1=show-event&eid=" . $fetched_data['id']);
+            $data[] = $fetched_data;
         }
     }
     return $data;
 }
+
+
+
 function Wo_GetSuggestedEvents($args = array()) {
     global $sqlConnect, $wo;
     if ($wo['loggedin'] == false) {

@@ -51,10 +51,7 @@ Thumbs.db
 *.mov
 *.wmv
 
-
+.htaccess
 config.php
-/upload
-
 /cache
-config.php
-
+/upload
