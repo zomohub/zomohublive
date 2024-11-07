@@ -24,6 +24,11 @@
 // error_reporting(E_ALL);
 
 
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 // Determine if the environment is local or live
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     // Local server settings
@@ -31,6 +36,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_user = "root";
     $sql_db_pass = "";
     $sql_db_name = "zomolive";
+
     $site_url = "http://localhost/zomohublive";
 
 } else if( $_SERVER['SERVER_ADDR'] == '107.6.161.242' ) {
@@ -44,12 +50,24 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     }
     else {
     // AWS server settings
+
+    $site_url = "http://localhost/zomohublive"; // e.g. (http://example.com)
+} else {
+    // Live server settings
+
     $sql_db_host = "database-1.c3iyeo2a6nzb.us-east-1.rds.amazonaws.com";
     $sql_db_user = "zomohub";
     $sql_db_pass = "sIBuO1rvnK8TU1fhVnLY";
     $sql_db_name = "zomohub";
+
     $site_url = "http://ec2-34-198-35-11.compute-1.amazonaws.com"; // e.g. (http://example.com)
     }
+
+
+    $site_url = "https://www.zomohub.com"; // e.g. (http://example.com)
+}
+// echo $sql_db_name;
+// die();
 
 
 $auto_redirect = true;

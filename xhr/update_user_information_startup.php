@@ -1,8 +1,6 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+
 
 if ($f == 'update_user_information_startup' && Wo_CheckSession($hash_id) === true) {
     if (isset($_POST['user_id']) && is_numeric($_POST['user_id']) && $_POST['user_id'] > 0) {

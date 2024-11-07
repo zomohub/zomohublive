@@ -2994,8 +2994,12 @@ if ($f == 'admin_setting' AND (Wo_IsAdmin() || Wo_IsModerator())) {
     if ($s == 'edit_poll') {
         if (Wo_CheckSession($hash_id) === true && !empty($_POST['poll_id']) && !empty($_POST['poll_title'])) {
                
+
             $startDate = $_POST['poll_start_date'];
             $convertedStartDate = DateTime::createFromFormat('d-m-Y', $startDate)->format('Y-m-d');
+
+  
+
 
             $endDate = $_POST['poll_end_date'];
             $convertedEndDate = DateTime::createFromFormat('d-m-Y', $endDate)->format('Y-m-d');

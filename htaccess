@@ -50,6 +50,7 @@ RewriteRule ^groups(/?|)$ index.php?link1=groups [QSA]
 RewriteRule ^suggested-groups(/?|)$ index.php?link1=suggested-groups [QSA]
 RewriteRule ^create-group(/?|)$ index.php?link1=create-group [QSA]
 RewriteRule ^create-page(/?|)$ index.php?link1=create-page [QSA]
+RewriteRule ^start-page(/?|)$ index.php?link1=start-page [QSA]
 RewriteRule ^logout(/?|)$ index.php?link1=logout [QSA]
 RewriteRule ^contact-us(/?|)$ index.php?link1=contact-us [QSA]
 RewriteRule ^setting(/?|)$ index.php?link1=setting [QSA]
@@ -86,6 +87,9 @@ RewriteRule ^authorize(/?|)$ index.php?link1=authorize [NC,QSA]
 RewriteRule ^poke(/?|)$ index.php?link1=poke [NC,QSA]
 RewriteRule ^most_liked(/?|)$ index.php?link1=most_liked [NC,QSA]
 RewriteRule ^jobs(/?|)$ index.php?link1=jobs [NC,QSA]
+RewriteRule ^create-job(/?|)$ index.php?link1=create-job [NC,QSA]
+RewriteRule ^mentor(/?|)$ index.php?link1=mentor [NC,QSA]
+RewriteRule ^mentor-luca(/?|)$ index.php?link1=mentor-luca [NC,QSA]
 RewriteRule ^common_things(/?|)$ index.php?link1=common_things [NC,QSA]
 RewriteRule ^funding(/?|)$ index.php?link1=funding [NC,QSA]
 RewriteRule ^my_funding(/?|)$ index.php?link1=my_funding [NC,QSA]
@@ -277,7 +281,6 @@ ExpiresByType image/x-icon "access plus 1 year"
 ExpiresDefault "access plus 1 month"
 </IfModule>
 ## EXPIRES CACHING ##
-
 <ifModule mod_headers.c>
   Header unset Connection
   Header set Connection keep-alive
@@ -285,6 +288,15 @@ ExpiresDefault "access plus 1 month"
   Header unset Keep-Alive
   Header set Keep-Alive timeout=100,max=500
 </ifModule>
+# Force HTTPS and www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
+# If accessing the domain without www, redirect to www version
+RewriteCond %{HTTP_HOST} ^zomohub\.com [NC]
+RewriteRule ^(.*)$ https://www.zomohub.com/$1 [R=301,L]
+
 AuthType Basic
 AuthName "Protected Site"
 AuthUserFile /home/ec2-user/.htpasswd
