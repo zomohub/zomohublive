@@ -11997,7 +11997,6 @@ function Wo_GetAdminPoll($id) {
 
 function Wo_GetPollsList() {
 
-
     global $sqlConnect;
 
     $data = array();
