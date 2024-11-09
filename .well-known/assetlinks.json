@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "com.zomohub.app",
+                 "sha256_cert_fingerprints": ["49:62:13:DE:5B:5E:2B:48:A8:F7:FC:AE:F9:51:BC:8B:7E:97:44:DD:E8:47:08:CC:A3:6A:7E:6C:04:13:A0:49"] }
+  }]

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "HGLF6SYS45.com.zomohub.app",
+        "paths": [ "/index.php?link1=reset-password*" ]
+      }
+    ]
+  }
+}
