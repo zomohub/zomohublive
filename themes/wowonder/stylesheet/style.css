@@ -29690,6 +29690,6 @@ html, body {
 
 /* Hide Chat Panel */
 body, .navbar-default, .wo_about_wrapper_parent { padding-right: 0 !important;}
-.chat-container { display:none; }
+.chat-container { display:block; }
 .chat_main {right:0;}
 
