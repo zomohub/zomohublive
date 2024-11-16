@@ -136,7 +136,7 @@
 
             $login_response_data = json_decode($login_response, true);
 
-            
+
             print_r($login_response);
 
 
@@ -155,7 +155,7 @@
                 for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
                 {
 
-                    $numbers = range(1, 10);
+                    echo $numbers = range(1, 10);
 
                     shuffle($numbers);
 
