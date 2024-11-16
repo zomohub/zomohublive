@@ -1,11 +1,8 @@
 
 <?php
 
-if (function_exists('curl_version')) {
-    echo "cURL is enabled.";
-} else {
-    echo "cURL is not enabled.";
-}
+print_r($_SERVER);
+
 echo "<br>";
 
     ini_set('display_errors', '1');
