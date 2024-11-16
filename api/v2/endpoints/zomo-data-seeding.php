@@ -134,8 +134,8 @@ echo "<br>";
             $login_curl = curl_init($login_url);
 
             curl_setopt($login_curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($login_curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($login_curl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($login_curl, CURLOPT_POST, true);
             curl_setopt($login_curl, CURLOPT_POSTFIELDS, http_build_query($login_data));
 
@@ -174,8 +174,8 @@ echo "<br>";
                 curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
                 curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
                 curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
                 curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
