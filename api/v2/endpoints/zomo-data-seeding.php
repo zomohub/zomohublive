@@ -6,12 +6,13 @@ if (function_exists('curl_version')) {
 } else {
     echo "cURL is not enabled.";
 }
+echo "<br>";
 
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
 
-    echo $login_url = $_POST['site_url']."auth";
+    $login_url = $_POST['site_url']."auth";
     
     $post_url = $_POST['site_url']."new_post";
 
@@ -26,10 +27,7 @@ if (function_exists('curl_version')) {
     ];
 
 
-
     //     $post_url_token = $post_url.'?access_token=17521c139aabd8ca9eb926218798066ad430d267dea286c5ba0edf2cc66944d387434f27858844093b777b775721dfa8d36de2a320a03e53';
-
-
 
     //     $post_curl = curl_init($post_url_token);
 
@@ -133,19 +131,23 @@ if (function_exists('curl_version')) {
             ];
 
 
-            $ch = curl_init($login_url);
+            $login_curl = curl_init($login_url);
 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
+            curl_setopt($login_curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($login_curl, CURLOPT_POST, true);
+            curl_setopt($login_curl, CURLOPT_POSTFIELDS, http_build_query($login_data));
 
-            $login_response = curl_exec($ch);
+            $login_response = curl_exec($login_curl);
 
             $login_response_data = json_decode($login_response, true);
 
-            print_r($login_response_data);
+            print_r($login_response);
 
-            curl_close($ch);
+            if (curl_errno($login_curl)) {
+                echo 'Error: ' . curl_error($login_curl);
+            }
+
+            curl_close($login_curl);
 
             echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
             echo "User Post";
