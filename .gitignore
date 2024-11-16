@@ -51,7 +51,7 @@ Thumbs.db
 *.mov
 *.wmv
 
-.htaccess
+#.htaccess
 config.php
 cache
 upload
