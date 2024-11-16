@@ -67,19 +67,15 @@
     if (isset($_FILES['json_data_file']) && $_FILES['json_data_file']['error'] === UPLOAD_ERR_OK) {
   
         $tempFilePath = $_FILES['json_data_file']['tmp_name'];
-
-      
-        
+  
         $jsonData = file_get_contents($tempFilePath);
         
-        $data = json_decode($jsonData, true);
-   
+        $data = json_decode($jsonData, true);   
 
         $loop_count = $_POST['record_add_count'];
 
         $user_id_start_with = $_POST['user_id_start_with'];
 
-        
 
         for ($j = 0; $j < count($data); $j++) 
         {
@@ -139,11 +135,13 @@
 
             $response = curl_exec($ch);
 
+
+
             $login_response_data = json_decode($response, true);
 
             curl_close($ch);
 
-            $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
+            echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
     
             
             for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
