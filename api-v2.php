@@ -46,6 +46,7 @@ if ($server_key != $wo['config']['widnows_app_api_key']) {
     exit();
 }
 $api                        = "api/v2/endpoints/$type.php";
+
 $pages_without_access_token = array(
     'get-site-settings',
     'active_account_sms',
