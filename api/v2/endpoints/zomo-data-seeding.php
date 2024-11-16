@@ -1,12 +1,6 @@
 
 <?php
 
-echo $rootDir = realpath($_SERVER["DOCUMENT_ROOT"]);
-
-print_r($_SERVER);
-
-echo "<br>";
-
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -150,65 +144,69 @@ echo "<br>";
 
             curl_close($login_curl);
 
-            echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
-            echo "User Post";
-    
-            
-            for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
+            if($login_response_data['access_token'])
             {
 
-                $numbers = range(1, 10);
+                echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
+                echo "<br>";
+                
+                for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
+                {
 
-                shuffle($numbers);
+                    $numbers = range(1, 10);
 
-                $var1 = $numbers[0];
-                $var2 = $numbers[1];
-                $var3 = $numbers[2];
+                    shuffle($numbers);
 
-                $post_curl = curl_init($post_url_token);
+                    $var1 = $numbers[0];
+                    $var2 = $numbers[1];
+                    $var3 = $numbers[2];
 
-                curl_setopt($post_curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($post_curl, CURLOPT_POST, true);
-                curl_setopt($post_curl, CURLOPT_ENCODING, '');
-                curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
-                curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
-                curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
-                curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
+                    $post_curl = curl_init($post_url_token);
 
-                curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
-                    'server_key' => $server_key,
-                    'postText' => $lorem_text[array_rand($lorem_text)],
-                    'post_color' => 33,
-                    'postMusic' => '',
-                    'event_id' => 1,
-                    'postPrivacy' => 4,
-                    'postFile' => '',
-                    // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var1.'.png'),
-                    // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var2.'.png'),
-                    // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var3.'.png'),
-                    'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
-                    'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
-                    'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
-                    'postVideo' => '',
-                    'device_type' => 'windows')
-                );
+                    curl_setopt($post_curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($post_curl, CURLOPT_POST, true);
+                    curl_setopt($post_curl, CURLOPT_ENCODING, '');
+                    curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
+                    curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
+                    curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
+                    curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                    curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
-                $response = curl_exec($post_curl);
+                    curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
+                        'server_key' => $server_key,
+                        'postText' => $lorem_text[array_rand($lorem_text)],
+                        'post_color' => 33,
+                        'postMusic' => '',
+                        'event_id' => 1,
+                        'postPrivacy' => 4,
+                        'postFile' => '',
+                        // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var1.'.png'),
+                        // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var2.'.png'),
+                        // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var3.'.png'),
+                        'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                        'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
+                        'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
+                        'postVideo' => '',
+                        'device_type' => 'windows')
+                    );
 
-                if (curl_errno($post_curl)) {
-                    echo 'Error: ' . curl_error($post_curl);
+                    $response = curl_exec($post_curl);
+
+                    if (curl_errno($post_curl)) {
+                        echo 'Error: ' . curl_error($post_curl);
+                    }
+
+                    curl_close($post_curl);
+
+                    echo "<pre>";
+                        print_r($response);
+                    echo "</pre>";
+
+    
                 }
 
-                curl_close($post_curl);
-
-                echo "<pre>";
-                    print_r($response);
-                echo "</pre>";
-
- 
             }
 
     
