@@ -135,6 +135,8 @@
 
             $response = curl_exec($ch);
 
+            print_r($response);
+
 
 
             $login_response_data = json_decode($response, true);
