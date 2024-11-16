@@ -196,6 +196,10 @@ echo "<br>";
 
                 $response = curl_exec($post_curl);
 
+                if (curl_errno($post_curl)) {
+                    echo 'Error: ' . curl_error($post_curl);
+                }
+
                 curl_close($post_curl);
 
                 echo "<pre>";
