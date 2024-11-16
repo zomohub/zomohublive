@@ -189,9 +189,9 @@ echo "<br>";
                     // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var1.'.png'),
                     // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var2.'.png'),
                     // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var3.'.png'),
-                    'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var1.'.png'),
-                    'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var2.'.png'),
-                    'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var3.'.png'),
+                    'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                    'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
+                    'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
                     'postVideo' => '',
                     'device_type' => 'windows')
                 );
