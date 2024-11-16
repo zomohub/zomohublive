@@ -136,8 +136,9 @@
 
             $login_response_data = json_decode($login_response, true);
 
-            print_r($login_response);
             
+            print_r($login_response);
+
 
             if (curl_errno($login_curl)) {
                 echo 'Error: ' . curl_error($login_curl);
