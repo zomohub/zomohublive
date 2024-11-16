@@ -1,5 +1,6 @@
 <?php 
 if ($f == 'reset_password') {
+
     if (isset($_POST['id'])) {
         $user_id  = explode("_", $_POST['id']);
         if (Wo_isValidPasswordResetToken($_POST['id']) === false && Wo_isValidPasswordResetToken2($_POST['id']) === false) {

@@ -25,12 +25,9 @@
 
 
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 // Determine if the environment is local or live
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
+
     // Local server settings
     $sql_db_host = "localhost";
     $sql_db_user = "root";
@@ -47,11 +44,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_pass = "]Iwo6c5mkKru";
     $sql_db_name = "zomohubc_zomohub_social_media";
     $site_url = "https://phase2.zomohub.com";
-    }
-    else {
-    // AWS server settings
 
-    $site_url = "http://localhost/zomohublive"; // e.g. (http://example.com)
 } else {
     // Live server settings
 
@@ -62,10 +55,6 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 
     $site_url = "http://ec2-34-198-35-11.compute-1.amazonaws.com"; // e.g. (http://example.com)
     }
-
-
-    $site_url = "https://www.zomohub.com"; // e.g. (http://example.com)
-}
 // echo $sql_db_name;
 // die();
 

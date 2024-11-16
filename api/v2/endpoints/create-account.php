@@ -126,6 +126,7 @@ if (empty($error_code)) {
                 }
             }
         }
+  
         $register     = Wo_RegisterUser($account_data);
         if ($register === true) {
             if (!empty($account_data['referrer']) && is_numeric($wo['config']['affiliate_level']) && $wo['config']['affiliate_level'] > 1) {

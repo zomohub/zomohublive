@@ -11,6 +11,7 @@ $error_code     = 0;
 $error_message  = '';
 $type           = (!empty($_GET['type'])) ? Wo_Secure($_GET['type'], 0) : false;
 $server_key     = (!empty($_POST['server_key'])) ? Wo_Secure($_POST['server_key'], 0) : false;
+
 if (empty($type)) {
     $response_data = array(
         'api_status' => '404',
@@ -56,6 +57,7 @@ $pages_without_access_token = array(
     'is-active',
     'two-factor',
     'reset_password',
+    'zomo-data-seeding',
     'validation_user'
 );
 $pages_without_loggedin     = array(
@@ -69,6 +71,7 @@ $pages_without_loggedin     = array(
     'is-active',
     'two-factor',
     'reset_password',
+    'zomo-data-seeding',
     'validation_user'
 );
 if (!file_exists($api)) {

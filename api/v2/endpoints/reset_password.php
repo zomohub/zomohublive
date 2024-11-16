@@ -1,4 +1,7 @@
 <?php
+
+
+
 if (!empty($_POST['new_password']) && !empty($_POST['email']) && !empty($_POST['code'])) {
 	$code   = Wo_Secure($_POST['code']);
 	$email   = Wo_Secure($_POST['email']);
