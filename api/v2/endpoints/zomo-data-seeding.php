@@ -1,6 +1,12 @@
 
 <?php
 
+if (function_exists('curl_version')) {
+    echo "cURL is enabled.";
+} else {
+    echo "cURL is not enabled.";
+}
+
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -133,17 +139,16 @@
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
 
-            $response = curl_exec($ch);
+            $login_response = curl_exec($ch);
 
-            print_r($response);
+            $login_response_data = json_decode($login_response, true);
 
-
-
-            $login_response_data = json_decode($response, true);
+            print_r($login_response_data);
 
             curl_close($ch);
 
             echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
+            echo "User Post";
     
             
             for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
