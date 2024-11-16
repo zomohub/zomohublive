@@ -4,7 +4,7 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 
-upload/
+
 deploy.yaml
 # Node artifact files
 node_modules/
@@ -53,5 +53,5 @@ Thumbs.db
 
 #.htaccess
 config.php
-cache
-upload
+cache/
+upload/
