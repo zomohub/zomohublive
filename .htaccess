@@ -282,6 +282,7 @@ ExpiresDefault "access plus 1 month"
 </IfModule>
 ## EXPIRES CACHING ##
 
+
 <ifModule mod_headers.c>
   Header unset Connection
   Header set Connection keep-alive
