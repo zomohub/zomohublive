@@ -221,7 +221,7 @@
                     CURLOPT_SSL_VERIFYHOST => false,
                     CURLOPT_POSTFIELDS => array(
                         'server_key' => $server_key,
-                        'postText' => 'https://www.linkedin.com/ ddddddddddddddddd',
+                        'postText' => $lorem_text[array_rand($lorem_text)],
                         'postPhotos[]'=> new CURLFILE('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
                         // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo2.jpg'),
                         // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo3.jpg')
@@ -235,8 +235,10 @@
 
                     curl_close($curl);
 
-
-
+                    if (curl_errno($post_curl)) {
+                        echo 'Error: ' . curl_error($post_curl);
+                    }
+                    
                     echo "<pre>";
                         print_r($response);
                     echo "</pre>";
