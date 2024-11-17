@@ -3,5 +3,5 @@
 http_response_code(200);
 
 // Output a simple response (optional)
-echo "Healthy";
+echo "Healthy Instance";
 ?>
