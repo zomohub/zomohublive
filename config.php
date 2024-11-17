@@ -30,10 +30,12 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_host = "localhost";
     $sql_db_user = "root";
     $sql_db_pass = "";
-    $sql_db_name = "zomohub";
+    $sql_db_name = "zomolive";
     $site_url = "http://localhost/zomohublive";
 
-} else if( $_SERVER['SERVER_ADDR'] == '107.6.161.242' ) {
+} 
+else if( $_SERVER['SERVER_ADDR'] == '107.6.161.242' ) 
+{
 
     // Live server settings
     $sql_db_host = "localhost";
@@ -41,15 +43,16 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $sql_db_pass = "]Iwo6c5mkKru";
     $sql_db_name = "zomohubc_zomohub_social_media";
     $site_url = "https://phase2.zomohub.com";
-    }
-    else {
+}
+else 
+{
     // AWS server settings
     $sql_db_host = "database-1.c3iyeo2a6nzb.us-east-1.rds.amazonaws.com";
     $sql_db_user = "zomohub";
     $sql_db_pass = "sIBuO1rvnK8TU1fhVnLY";
     $sql_db_name = "zomohub";
     $site_url = "https://www.zomohub.com"; // e.g. (http://example.com)
-    }
+}
 
 
 $auto_redirect = true;

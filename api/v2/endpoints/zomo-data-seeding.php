@@ -126,6 +126,7 @@
 
             $login_curl = curl_init($login_url);
 
+            curl_setopt($login_curl, CURLOPT_TIMEOUT, 0);
             curl_setopt($login_curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($login_curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($login_curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -155,7 +156,7 @@
                 for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
                 {
 
-                    echo $numbers = range(1, 10);
+                    $numbers = range(1, 10);
 
                     shuffle($numbers);
 
@@ -163,44 +164,78 @@
                     $var2 = $numbers[1];
                     $var3 = $numbers[2];
 
-                    $post_curl = curl_init($post_url_token);
+                    // $post_curl = curl_init($post_url_token);
 
-                    curl_setopt($post_curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($post_curl, CURLOPT_POST, true);
-                    curl_setopt($post_curl, CURLOPT_ENCODING, '');
-                    curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
-                    curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
-                    curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
-                    curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
-                    curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                    curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
+                    // curl_setopt($post_curl, CURLOPT_RETURNTRANSFER, true);
+                    // curl_setopt($post_curl, CURLOPT_POST, true);
+                    // curl_setopt($post_curl, CURLOPT_ENCODING, '');
+                    // curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
+                    // curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
+                    // curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
+                    // curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
+                    // curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
+                    // curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                    // curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
-                    curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
+                    // curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
+                    //     'server_key' => $server_key,
+                    //     // 'postText' => $lorem_text[array_rand($lorem_text)],
+                    //     // 'post_color' => 33,
+                    //     // 'postMusic' => '',
+                    //     // 'event_id' => 0,
+                    //     // 'postPrivacy' => 0,
+                    //     // 'postFile' => '',
+                    //     'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var1.'.png'),
+                    //     // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var2.'.png'),
+                    //     // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var3.'.png'),
+                    //     // 'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                    //     // 'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
+                    //     // 'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
+                    //     // 'postVideo' => '',
+                    //     // 'device_type' => 'windows'
+                    //     )
+                    // );
+
+                    // $response = curl_exec($post_curl);
+
+                    // if (curl_errno($post_curl)) {
+                    //     echo 'Error: ' . curl_error($post_curl);
+                    // }
+
+                    // curl_close($post_curl);
+
+
+
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://www.zomohub.com/api/new_post?access_token='.$login_response_data['access_token'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',                    
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                    CURLOPT_POSTFIELDS => array(
                         'server_key' => $server_key,
-                        'postText' => $lorem_text[array_rand($lorem_text)],
-                        'post_color' => 33,
-                        'postMusic' => '',
-                        'event_id' => 1,
-                        'postPrivacy' => 4,
-                        'postFile' => '',
-                        // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var1.'.png'),
-                        // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var2.'.png'),
-                        // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo'.$var3.'.png'),
-                        'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
-                        'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
-                        'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
-                        'postVideo' => '',
-                        'device_type' => 'windows')
-                    );
+                        'postText' => 'https://www.linkedin.com/ ddddddddddddddddd',
+                        'postPhotos[]'=> new CURLFILE('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                        // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo2.jpg'),
+                        // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo3.jpg')
+                    ),
+                    // CURLOPT_HTTPHEADER => array(
+                    //     'Cookie: _us=1731928067; ad-con=%7B%26quot%3Bdate%26quot%3B%3A%26quot%3B2024-11-17%26quot%3B%2C%26quot%3Bads%26quot%3B%3A%5B%5D%7D; PHPSESSID=3bisv9utlla2cemaki76ivj06o; mode=day'
+                    // ),
+                    ));
 
-                    $response = curl_exec($post_curl);
+                    $response = curl_exec($curl);
 
-                    if (curl_errno($post_curl)) {
-                        echo 'Error: ' . curl_error($post_curl);
-                    }
+                    curl_close($curl);
 
-                    curl_close($post_curl);
+
 
                     echo "<pre>";
                         print_r($response);
