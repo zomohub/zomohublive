@@ -62,16 +62,17 @@
 
 
     if (isset($_FILES['json_data_file']) && $_FILES['json_data_file']['error'] === UPLOAD_ERR_OK) {
+
   
         $tempFilePath = $_FILES['json_data_file']['tmp_name'];
   
         $jsonData = file_get_contents($tempFilePath);
+
+        // print_r($jsonData);
         
         $data = json_decode($jsonData, true);
 
-        print_r($data);
-        
-        exit();
+  
 
         $loop_count = $_POST['record_add_count'];
 
@@ -84,11 +85,12 @@
 
             //     break;
             // }
+            $numbers = range(1, 500);
     
             $code = md5(rand(1111, 9999) . time());
             $account_data = array(
-                'first_name'    => $data[$j]['first_name'],
-                'last_name'     => $data[$j]['last_name'],
+                'first_name'    => $data[$numbers[0]]['first_name'],
+                'last_name'     => $data[$numbers[0]]['last_name'],
                 'email'         => Wo_Secure('zomo_user_'.$user_id_start_with.'@gmail.com', 0),
                 'username'      => Wo_Secure('zomo_user_'.$user_id_start_with, 0),
                 'password'      => 'zomouserpass123',
