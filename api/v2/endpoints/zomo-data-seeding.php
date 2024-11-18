@@ -67,7 +67,11 @@
   
         $jsonData = file_get_contents($tempFilePath);
         
-        $data = json_decode($jsonData, true);   
+        $data = json_decode($jsonData, true);
+
+        print_r($data);
+        
+        exit();
 
         $loop_count = $_POST['record_add_count'];
 
