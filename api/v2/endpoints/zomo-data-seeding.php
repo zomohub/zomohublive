@@ -74,12 +74,12 @@
         $user_id_start_with = $_POST['user_id_start_with'];
 
 
-        for ($j = 0; $j < count($data); $j++) 
+        for ($j = 0; $j < $loop_count; $j++) 
         {
-            if ($j >= $loop_count) {
+            // if ($j >= $loop_count) {
 
-                break;
-            }
+            //     break;
+            // }
     
             $code = md5(rand(1111, 9999) . time());
             $account_data = array(
