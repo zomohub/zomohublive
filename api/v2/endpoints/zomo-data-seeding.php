@@ -185,12 +185,12 @@
                         // 'event_id' => 0,
                         // 'postPrivacy' => 0,
                         // 'postFile' => '',
-                        'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var1.'.png'),
-                        'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var2.'.png'),
-                        'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var3.'.png'),
-                        // 'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
-                        // 'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
-                        // 'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
+                        // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var1.'.png'),
+                        // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var2.'.png'),
+                        // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var3.'.png'),
+                        'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                        'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
+                        'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
                         // 'postVideo' => '',
                         // 'device_type' => 'windows'
                         )
