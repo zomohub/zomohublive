@@ -36,7 +36,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 
     $site_url = "http://localhost/zomohublive";
 
-} else if( $_SERVER['SERVER_ADDR'] == '107.6.161.242' ) {
+} else if( $_SERVER['SERVER_ADDR'] == '107.6.142.186' ) {
 
     // Live server settings
     $sql_db_host = "localhost";
