@@ -72,8 +72,6 @@
         
         $data = json_decode($jsonData, true);
 
-  
-
         $loop_count = $_POST['record_add_count'];
 
         $user_id_start_with = $_POST['user_id_start_with'];
@@ -85,7 +83,10 @@
 
             //     break;
             // }
-            $numbers = range(1, 500);
+            $numbers = range(1, 150);
+
+            shuffle($numbers);
+
     
             $code = md5(rand(1111, 9999) . time());
             $account_data = array(
