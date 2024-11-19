@@ -19,6 +19,8 @@
     }
 
 
+
+
     $server_key = $_POST['server_key'];
 
     $login_url = $_GET['site_url']."auth";
@@ -88,9 +90,9 @@
 
             $user_id_start_with++;
 
-            echo "<br>";
+            echo "----";
             echo $j;
-            echo "<br>";
+            echo "----";
         
             // echo "======================================================================<br>User Count :".$j.'<br>======================================================================<br>';
     
@@ -132,15 +134,17 @@
                 echo 'Error: ' . curl_error($login_curl);
             }
 
-    
+            // print_r($login_response_data);
 
             curl_close($login_curl);
 
             if($login_response_data['access_token'])
             {
 
+                echo "----";
                 echo $post_url_token = $post_url.'?access_token='.$login_response_data['access_token'];
-                echo "<br>";
+                echo "----";
+
                 
                 for ($post_loop = 0; $post_loop < $post_per_user; $post_loop++) 
                 {
@@ -167,24 +171,31 @@
                     curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
                     curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
-                    curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
-                        'server_key' => $server_key,
-                        'postText' => $lorem_text[array_rand($lorem_text)],
-                        // 'post_color' => 33,
-                        // 'postMusic' => '',
-                        // 'event_id' => 0,
-                        // 'postPrivacy' => 0,
-                        // 'postFile' => '',
-                        // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var1.'.png'),
-                        // 'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var2.'.png'),
-                        // 'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/seed-imgs/photo'.$var3.'.png'),
-                        'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
-                        // 'postPhotos[1]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var2.'.png'),
-                        // 'postPhotos[2]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var3.'.png'),
-                        // 'postVideo' => '',
-                        // 'device_type' => 'windows'
-                        )
-                    );
+
+                    if ($_SERVER['SERVER_NAME'] == 'localhost') {
+
+                        curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
+                            'server_key' => $server_key,
+                            'postText' => $lorem_text[array_rand($lorem_text)],
+                            'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var1.'.png'),
+                            // 'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                            )
+                        );
+
+
+                    }
+                    else
+                    {
+                        curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
+                            'server_key' => $server_key,
+                            'postText' => $lorem_text[array_rand($lorem_text)],
+                            // 'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/data-seeing-images/photo'.$var1.'.png'),
+                            'postPhotos[0]' => new CURLFile('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
+                            )
+                        );
+                    }
+
+
 
                     $response = curl_exec($post_curl);
 
@@ -193,7 +204,6 @@
                     }
 
                     curl_close($post_curl);
-
     
                 }
 
@@ -202,7 +212,6 @@
             unset($login_response, $response, $post_curl, $login_curl);
             gc_collect_cycles();
 
-    
         }
 
 
