@@ -5,11 +5,35 @@
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
 
-    $login_url = $_POST['site_url']."auth";
-    
-    $post_url = $_POST['site_url']."new_post";
 
-    $post_per_user = $_POST['post_per_user'];
+    if ($_SERVER['SERVER_NAME'] == 'localhost') {
+        
+        $filePath = 'F:/xampp/htdocs/zomohublive/data-seeing-images/data-seeding.json';
+        $_POST['server_key']='7c06ec12d931b721ecf2c66fb556b169';
+    
+    } 
+
+    else 
+    {
+        $filePath = '/var/www/html/data-seeing-images/data-seeding.json';
+        $_POST['server_key']='5df02baa4b9705bfa29589f69fc064a0';
+    }
+
+
+
+    $server_key = $_POST['server_key'];
+
+
+    $login_url = $_GET['site_url']."auth";
+    
+    $post_url = $_GET['site_url']."new_post";
+
+    $post_per_user = $_GET['post_per_user'];
+
+    $get_post_per_user = $_GET['record_add_count'];
+
+    $user_id_start_with = $_GET['user_id_start_with'];
+
 
     $lorem_text = [
         "Lorem ipsum dolor", "Training hard", "Achieving new goals", "Teamwork in action",
@@ -61,20 +85,20 @@
 
 
 
-    if (isset($_FILES['json_data_file']) && $_FILES['json_data_file']['error'] === UPLOAD_ERR_OK) {
+    if (file_exists($filePath)) {
 
+
+        // $tempFilePath = $_FILES['json_data_file']['tmp_name'];
   
-        $tempFilePath = $_FILES['json_data_file']['tmp_name'];
-  
-        $jsonData = file_get_contents($tempFilePath);
+        $jsonData = file_get_contents($filePath);
 
         // print_r($jsonData);
         
         $data = json_decode($jsonData, true);
 
-        $loop_count = $_POST['record_add_count'];
+        $loop_count = $get_post_per_user;
 
-        $user_id_start_with = $_POST['user_id_start_with'];
+        $user_id_start_with = $user_id_start_with;
 
 
         for ($j = 0; $j < $loop_count; $j++) 
@@ -147,10 +171,14 @@
 
             print_r($login_response);
 
+            
+
 
             if (curl_errno($login_curl)) {
                 echo 'Error: ' . curl_error($login_curl);
             }
+
+            exit();
 
             curl_close($login_curl);
 
