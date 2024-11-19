@@ -5,7 +5,6 @@
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
 
-
     if ($_SERVER['SERVER_NAME'] == 'localhost') {
         
         $filePath = 'F:/xampp/htdocs/zomohublive/data-seeing-images/data-seeding.json';
@@ -20,9 +19,7 @@
     }
 
 
-
     $server_key = $_POST['server_key'];
-
 
     $login_url = $_GET['site_url']."auth";
     
@@ -34,7 +31,6 @@
 
     $user_id_start_with = $_GET['user_id_start_with'];
 
-
     $lorem_text = [
         "Lorem ipsum dolor", "Training hard", "Achieving new goals", "Teamwork in action",
         "Pushing boundaries", "Striving for excellence", "Inspiring moves", "Passion for the game",
@@ -42,47 +38,6 @@
         "Challenge accepted", "Unstoppable energy", "Chasing dreams", "Determined to win",
         "Strength and discipline", "Play with heart", "Rise to the challenge", "Unbreakable spirit"
     ];
-
-
-    //     $post_url_token = $post_url.'?access_token=17521c139aabd8ca9eb926218798066ad430d267dea286c5ba0edf2cc66944d387434f27858844093b777b775721dfa8d36de2a320a03e53';
-
-    //     $post_curl = curl_init($post_url_token);
-
-    //     curl_setopt($post_curl, CURLOPT_RETURNTRANSFER, true);
-    //     curl_setopt($post_curl, CURLOPT_POST, true);
-    //     curl_setopt($post_curl, CURLOPT_ENCODING, '');
-    //     curl_setopt($post_curl, CURLOPT_MAXREDIRS, 10);
-    //     curl_setopt($post_curl, CURLOPT_TIMEOUT, 0);
-    //     curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
-    //     curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-    //     curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
-
-    //     curl_setopt($post_curl, CURLOPT_POSTFIELDS, array(
-    //         'server_key' => $server_key,
-    //         'postText' => $lorem_text[array_rand($lorem_text)],
-    //         'post_color' => 33,
-    //         'postMusic' => '',
-    //         'event_id' => 1,
-    //         'postPrivacy' => 4,
-    //         'postFile' => '',
-    //         'postPhotos[0]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo1.png'),
-    //         'postPhotos[1]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo2.png'),
-    //         'postPhotos[2]' => new CURLFile('F:/xampp/htdocs/zomohublive/upload/photo3.png'),
-    //         'postVideo' => '',
-    //         'device_type' => 'windows')
-    //     );
-
-    //     $response = curl_exec($post_curl);
-
-    //     curl_close($post_curl);
-
-    //     echo "<br>";
-
-
-   
-
-    // exit();
-
 
 
     if (file_exists($filePath)) {
@@ -133,19 +88,22 @@
 
             $user_id_start_with++;
 
-        
-            echo "======================================================================<br>User Count :".$j.'<br>======================================================================<br>';
-    
-            echo "Name: ". $account_data['first_name'] ." ". $account_data['last_name'] ."<br>";
-            echo "Email : ". $account_data['email'] ."<br>";
-            echo "Username : ". $account_data['username'] ."<br>";
-            echo "Password : ". $account_data['password'] ."<br>";
-            echo "Email Code : ". $account_data['email_code'] ."<br>";
-            echo "SRC : ". $account_data['src'] ."<br>";
-            echo "Timezone : ". $account_data['timezone'] ."<br>";
-            echo "Gender : ". $account_data['gender'] ."<br>";
-            echo "Active : ". $account_data['gender'] ."<br>";
             echo "<br>";
+            echo $j;
+            echo "<br>";
+        
+            // echo "======================================================================<br>User Count :".$j.'<br>======================================================================<br>';
+    
+            // echo "Name: ". $account_data['first_name'] ." ". $account_data['last_name'] ."<br>";
+            // echo "Email : ". $account_data['email'] ."<br>";
+            // echo "Username : ". $account_data['username'] ."<br>";
+            // echo "Password : ". $account_data['password'] ."<br>";
+            // echo "Email Code : ". $account_data['email_code'] ."<br>";
+            // echo "SRC : ". $account_data['src'] ."<br>";
+            // echo "Timezone : ". $account_data['timezone'] ."<br>";
+            // echo "Gender : ". $account_data['gender'] ."<br>";
+            // echo "Active : ". $account_data['gender'] ."<br>";
+            // echo "<br>";
 
             $login_data = [
                 'server_key' => $server_key,
@@ -161,17 +119,13 @@
             curl_setopt($login_curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($login_curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($login_curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($login_curl, CURLOPT_VERBOSE, true);
             curl_setopt($login_curl, CURLOPT_POST, true);
             curl_setopt($login_curl, CURLOPT_POSTFIELDS, http_build_query($login_data));
 
             $login_response = curl_exec($login_curl);
 
             $login_response_data = json_decode($login_response, true);
-
-
-            print_r($login_response);
-
-            
 
 
             if (curl_errno($login_curl)) {
@@ -209,6 +163,7 @@
                     curl_setopt($post_curl, CURLOPT_FOLLOWLOCATION, true);
                     curl_setopt($post_curl, CURLOPT_SSL_VERIFYPEER, false);
                     curl_setopt($post_curl, CURLOPT_SSL_VERIFYHOST, false);
+                    curl_setopt($post_curl, CURLOPT_VERBOSE, true);
                     curl_setopt($post_curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
                     curl_setopt($post_curl, CURLOPT_CUSTOMREQUEST, 'POST');
 
@@ -239,73 +194,22 @@
 
                     curl_close($post_curl);
 
-                    print_r($response);
-
-
-
-                    // $curl = curl_init();
-
-                    // curl_setopt_array($curl, array(
-                    // CURLOPT_URL => 'https://www.zomohub.com/api/new_post?access_token='.$login_response_data['access_token'],
-                    // CURLOPT_RETURNTRANSFER => true,
-                    // CURLOPT_ENCODING => '',
-                    // CURLOPT_MAXREDIRS => 10,
-                    // CURLOPT_TIMEOUT => 0,
-                    // CURLOPT_FOLLOWLOCATION => true,
-                    // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    // CURLOPT_CUSTOMREQUEST => 'POST',                    
-                    // CURLOPT_SSL_VERIFYPEER => false,
-                    // CURLOPT_SSL_VERIFYHOST => false,
-                    // CURLOPT_POSTFIELDS => array(
-                    //     'server_key' => $server_key,
-                    //     'postText' => $lorem_text[array_rand($lorem_text)],
-                    //     'postPhotos[]'=> new CURLFILE('/var/www/html/data-seeing-images/photo'.$var1.'.png'),
-                    //     // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo2.jpg'),
-                    //     // 'postPhotos[]'=> new CURLFILE('/F:/zomo_seeding_content/photo3.jpg')
-                    // ),
-                    // // CURLOPT_HTTPHEADER => array(
-                    // //     'Cookie: _us=1731928067; ad-con=%7B%26quot%3Bdate%26quot%3B%3A%26quot%3B2024-11-17%26quot%3B%2C%26quot%3Bads%26quot%3B%3A%5B%5D%7D; PHPSESSID=3bisv9utlla2cemaki76ivj06o; mode=day'
-                    // // ),
-                    // ));
-
-                    // $response = curl_exec($curl);
-
-                    // curl_close($curl);
-
-                    // if (curl_errno($post_curl)) {
-                    //     echo 'Error: ' . curl_error($post_curl);
-                    // }
-                    
-                    // echo "<pre>";
-                    //     print_r($response);
-                    // echo "</pre>";
-
     
                 }
 
             }
 
+            unset($login_response, $response, $post_curl, $login_curl);
+            gc_collect_cycles();
+
     
         }
 
-    
-        if (json_last_error() === JSON_ERROR_NONE) {
 
-            // echo "Uploaded JSON data:\n";
-            // print_r($data); // or process $data as needed
-        } else {
-            echo "Error decoding JSON: " . json_last_error_msg();
-        }
+
     } else {
         echo "File upload failed or no file uploaded.";
     }
-
-
-
- 
-
-
-
 
 
 
