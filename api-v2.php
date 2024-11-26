@@ -67,6 +67,7 @@ $pages_without_access_token = array(
     'two-factor',
     'reset_password',
     'zomo-data-seeding',
+    'get-seeded-data',
     'validation_user'
 );
 $pages_without_loggedin     = array(
@@ -81,6 +82,7 @@ $pages_without_loggedin     = array(
     'two-factor',
     'reset_password',
     'zomo-data-seeding',
+    'get-seeded-data',
     'validation_user'
 );
 if (!file_exists($api)) {
