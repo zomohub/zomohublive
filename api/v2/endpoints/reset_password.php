@@ -2,7 +2,7 @@
 
 if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
 	
-    $user_id  = explode("_", $_POST['code']);
+    echo $user_id  = explode("_", $_POST['code']);exit;
 
 	$update = true;
 
