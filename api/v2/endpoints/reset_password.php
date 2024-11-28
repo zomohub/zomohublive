@@ -1,12 +1,13 @@
 <?php
 
-if (!empty($_POST['new_password']) && !empty($_POST['email']) && !empty($_POST['code'])) {
-	$code   = Wo_Secure($_POST['code']);
-	$email   = Wo_Secure($_POST['email']);
+if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
+	
+    //$user_id  = explode("_", $_POST['code']);
+
 	$update = true;
 
     // Validate the reset token
-    if (Wo_isValidPasswordResetToken($code) === false && Wo_isValidPasswordResetToken2($code) === false) {
+    if (Wo_isValidPasswordResetToken($_POST['code']) === false && Wo_isValidPasswordResetToken2($_POST['code']) === false) {
         $update = false;
         $error_code = 9;
         $error_message = 'Invalid or expired reset code.';
@@ -20,7 +21,7 @@ if (!empty($_POST['new_password']) && !empty($_POST['email']) && !empty($_POST['
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
             // Get user information based on the reset code
-            $getUser = $db->where('email_code', $code)->getOne(T_USERS);
+            $getUser = $db->where('email_code', $_POST['code'])->getOne(T_USERS);
             
             if ($getUser) {
                 $user_id = $getUser->user_id;
