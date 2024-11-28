@@ -21,10 +21,10 @@ if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
             // Get user information based on the reset code
-            $getUser = $db->where('email_code', $_POST['code'])->getOne(T_USERS);
+            //$getUser = $db->where('email_code', $_POST['code'])->getOne(T_USERS);
             
-            if ($getUser) {
-                $user_id = $getUser->user_id;
+            if ($user_id) {
+                //$user_id = $getUser->user_id;
                 
                 // Update the user's password and clear the email_code
                 $db->where('user_id', $user_id)->update(T_USERS, [
