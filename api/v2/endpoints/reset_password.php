@@ -27,10 +27,10 @@ if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
                 //$user_id = $getUser->user_id;
                 
                 // Update the user's password and clear the email_code
-               echo $db->where('user_id', $user_id)->update(T_USERS, [
+                $db->where('user_id', $user_id)->update(T_USERS, [
                     'password' => $hashed_password,
                     'email_code' => ''
-                ]);exit;
+                ]);
 
                 // Clear the user's sessions to log them out of other devices
                 $db->where('user_id', $user_id)->delete(T_APP_SESSIONS);
