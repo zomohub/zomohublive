@@ -3,7 +3,7 @@
 if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
 	
     $user_id_data  = explode("_", $_POST['code']);
-    echo $user_id = $user_id_data[0];exit;  
+    $user_id = $user_id_data[0]; 
 	$update = true;
 
     // Validate the reset token
