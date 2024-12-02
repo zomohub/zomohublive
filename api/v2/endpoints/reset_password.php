@@ -51,6 +51,11 @@ if (!empty($_POST['new_password']) &&  !empty($_POST['code'])) {
             $error_code = 10;
             $error_message = 'Password is too short. It must be at least 6 characters.';
         }
+		
+		 $response_data = [
+                    'api_status' => 200,
+                    'message' => 'Your password has been successfully updated.'
+                ];
     }
 } else {
     $error_code = 8;
