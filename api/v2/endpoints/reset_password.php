@@ -65,6 +65,11 @@ if (isset($error_message)) {
         'message' => $error_message
     ]);
 } else {
+	// Send a success response
+                $response_data = [
+                    'api_status' => 200,
+                    'message' => 'Your password has been successfully updated.'
+                ];
     echo json_encode($response_data);
 }
 
