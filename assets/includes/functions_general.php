@@ -2348,3 +2348,48 @@ function full_url( $s, $use_forwarded_host = false )
 {
     return url_origin( $s, $use_forwarded_host ) . $s['REQUEST_URI'];
 }
+
+function Wo_GetUserReels($user_id, $limit = 50) {
+    global $sqlConnect;
+    $data = array();
+    $user_id = Wo_Secure($user_id);
+    $limit = Wo_Secure($limit);
+
+    // Query to fetch reels posted by the user
+    $query = mysqli_query($sqlConnect, "SELECT * FROM Wo_Posts WHERE user_id = {$user_id} AND is_reel = 1 AND active = 1 ORDER BY time DESC LIMIT {$limit}");
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
+function Wo_GetUserVideos($user_id, $limit = 50) {
+    global $sqlConnect;
+    $data = array();
+    $user_id = Wo_Secure($user_id);
+    $limit = Wo_Secure($limit);
+
+    // Query to fetch videos posted by the user
+    $query = mysqli_query($sqlConnect, "SELECT * FROM Wo_Posts WHERE user_id = {$user_id} AND postType = 'video' AND active = 1 ORDER BY time DESC LIMIT {$limit}");
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
+function Wo_GetUserImages($user_id, $limit = 50) {
+    global $sqlConnect;
+    $data = array();
+    $user_id = Wo_Secure($user_id);
+    $limit = Wo_Secure($limit);
+
+    // Query to fetch images posted by the user
+    $query = mysqli_query($sqlConnect, "SELECT * FROM Wo_Posts WHERE user_id = {$user_id} AND postType = 'image' AND active = 1 ORDER BY time DESC LIMIT {$limit}");
+    while ($row = mysqli_fetch_assoc($query)) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
