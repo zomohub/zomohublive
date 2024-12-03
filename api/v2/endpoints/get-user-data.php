@@ -12,9 +12,7 @@ $response_data = array(
     'api_status' => 400,
 );
 
-ini_set('display_errors', 1); // Enable error display
-ini_set('display_startup_errors', 1); // Show startup errors
-error_reporting(E_ALL); // Report all errors
+
 
 
 if (empty($_POST['user_id'])) {
@@ -140,60 +138,30 @@ if (empty($error_code)) {
 			$response_data['family'] = $family;
 		}
 		
-		if (!empty($data['images'])) {
-			$images = Wo_GetUserImages($recipient_data['user_id'], 50); // Fetch images
-			$response_data['images'] = array();
-
-			foreach ($images as $image) {
-				$response_data['images'][] = array(
-					'id' => $image['id'],
-					'post_id' => $image['post_id'],
-					'postFile' => $image['postFile'], // Path to the image file
-					'time' => $image['time'], // Timestamp of the post
-					'likes' => Wo_CountPostLikes($image['id']), // Total likes (optional)
-					'comments' => Wo_CountPostComments($image['id']), // Total comments (optional)
-					'is_liked' => Wo_IsPostLiked($image['id'], $wo['user']['user_id']) // Whether the logged-in user liked the image
-				);
-			}
-		}
-
-
-		if (!empty($data['videos'])) {
-				$videos = Wo_GetUserVideos($recipient_data['user_id'], 50); // Fetch videos
-				$response_data['videos'] = array();
-
-				foreach ($videos as $video) {
-					$response_data['videos'][] = array(
-						'id' => $video['id'],
-						'post_id' => $video['post_id'],
-						'postFile' => $video['postFile'], // Path to the video file
-						'videoTitle' => $video['videoTitle'], // Title of the video
-						'time' => $video['time'], // Timestamp of the post
-						'likes' => Wo_CountPostLikes($video['id']), // Total likes (optional)
-						'comments' => Wo_CountPostComments($video['id']), // Total comments (optional)
-						'is_liked' => Wo_IsPostLiked($video['id'], $wo['user']['user_id']) // Whether the logged-in user liked the video
-					);
-				}
+			if (!empty($data['images'])) {
+				$response_data['images'] = Wo_GetPosts(array(
+					'filter_by' => 'photos',
+					'publisher_id' => $recipient_data['user_id'],
+					'limit' => 50
+				));
 			}
 
+			if (!empty($data['videos'])) {
+				$response_data['videos'] = Wo_GetPosts(array(
+					'filter_by' => 'video',
+					'publisher_id' => $recipient_data['user_id'],
+					'limit' => 50
+				));
+			}
 
 			if (!empty($data['reels'])) {
-				$reels = Wo_GetUserReels($recipient_data['user_id'], 50); // Fetch the user's reels
-				$response_data['reels'] = array();
-
-				foreach ($reels as $reel) {
-					$response_data['reels'][] = array(
-						'id' => $reel['id'],
-						'post_id' => $reel['post_id'],
-						'postFile' => $reel['postFile'], // Path to the reel file
-						'videoTitle' => $reel['videoTitle'], // Title of the reel
-						'time' => $reel['time'], // Timestamp of the post
-						'likes' => Wo_CountPostLikes($reel['id']), // Total likes (optional)
-						'comments' => Wo_CountPostComments($reel['id']), // Total comments (optional)
-						'is_liked' => Wo_IsPostLiked($reel['id'], $wo['user']['user_id']) // Whether the logged-in user liked the reel
-					);
-				}
+				$response_data['reels'] = Wo_GetPosts(array(
+					'is_reel' => 'only',
+					'publisher_id' => $recipient_data['user_id'],
+					'limit' => 50
+				));
 			}
+
 
 
     }
