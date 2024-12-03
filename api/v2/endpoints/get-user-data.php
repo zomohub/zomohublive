@@ -133,5 +133,33 @@ if (empty($error_code)) {
 			}
 			$response_data['family'] = $family;
 		}
+		
+		if (!empty($data['images'])) {
+			$images = Wo_GetUserImages($recipient_data['user_id'], 50);
+			$response_data['images'] = array();
+			foreach ($images as $key => $image) {
+				$image['is_liked'] = Wo_IsImageLiked($image['id'], $wo['user']['user_id']); // Optional if likes are tracked
+				$response_data['images'][] = $image;
+			}
+		}
+
+		if (!empty($data['videos'])) {
+			$videos = Wo_GetUserVideos($recipient_data['user_id'], 50);
+			$response_data['videos'] = array();
+			foreach ($videos as $key => $video) {
+				$video['is_liked'] = Wo_IsVideoLiked($video['id'], $wo['user']['user_id']); // Optional
+				$response_data['videos'][] = $video;
+			}
+		}
+
+		if (!empty($data['reels'])) {
+			$reels = Wo_GetUserReels($recipient_data['user_id'], 50);
+			$response_data['reels'] = array();
+			foreach ($reels as $key => $reel) {
+				$reel['is_liked'] = Wo_IsReelLiked($reel['id'], $wo['user']['user_id']); // Optional
+				$response_data['reels'][] = $reel;
+			}
+		}
+
     }
 }
