@@ -2,6 +2,18 @@
 // API v2 is not yet finished, you have to use the old API version.
 header_remove('Server');
 header("Content-type: application/json");
+// Enable CORS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("HTTP/1.1 200 OK");
+    exit();
+}
+
 require('assets/init.php');
 require('api/v2/init.php');
 decryptConfigData();
