@@ -69,53 +69,34 @@ if (empty($error_code)) {
 		}
 		if (!empty($data['user_data'])) {
 			$recipient_data['is_following'] = 0;
-			$recipient_data['can_follow'] = 0;
-			if (Wo_IsFollowing($recipient_id, $logged_user_id)) {
-				$recipient_data['is_following'] = 1;
-				$recipient_data['can_follow'] = 1;
-			} else {
-				if (Wo_IsFollowRequested($recipient_id, $logged_user_id)) {
-					$recipient_data['is_following'] = 2;
-					$recipient_data['can_follow'] = 1;
-				} else {
-					if ($recipient_data['follow_privacy'] == 1) {
-						if (Wo_IsFollowing($logged_user_id, $recipient_id)) {
-							$recipient_data['is_following'] = 0;
-							$recipient_data['can_follow'] = 1;
-						}
-					} else if ($recipient_data['follow_privacy'] == 0) {
-						$recipient_data['can_follow'] = 1;
-					}
-				}
-			}
-			$recipient_data['is_following_me'] = (Wo_IsFollowing($wo['user']['user_id'], $recipient_data['user_id'])) ? 1 : 0;
-			$recipient_data['gender_text']        = ($recipient_data['gender'] == 'male') ? $wo['lang']['male'] : $wo['lang']['female'];
-			$recipient_data['lastseen_time_text'] = Wo_Time_Elapsed_String($recipient_data['lastseen']);
-			$recipient_data['is_blocked']         = Wo_IsBlocked($recipient_data['user_id']);
-			
-			// Extract visibility flags
-			$visibility_flags = !empty($_POST['info_visibility']) ? explode(',', $_POST['info_visibility']) : [];
-		
-			// Map visibility flags to recipient data keys
-			$visibility_map = [
-				'show_gender' => 'gender',
-				'show_dob'    => 'birthday',
-				'show_email'  => 'email',
-			];
-		
-			// Hide keys not included in visibility flags
-			foreach ($visibility_map as $flag => $key) {
-				if (!in_array($flag, $visibility_flags) && isset($recipient_data[$key])) {
-					unset($recipient_data[$key]);
-				}
-			}
-		
-			$response_data['user_data'] = $recipient_data;
+	        $recipient_data['can_follow'] = 0;
+	        if (Wo_IsFollowing($recipient_id, $logged_user_id)) {
+	            $recipient_data['is_following'] = 1;
+	            $recipient_data['can_follow'] = 1;
+	        } else {
+	            if (Wo_IsFollowRequested($recipient_id, $logged_user_id)) {
+	                $recipient_data['is_following'] = 2;
+	                $recipient_data['can_follow'] = 1;
+	            } else {
+	                if ($recipient_data['follow_privacy'] == 1) {
+	                    if (Wo_IsFollowing($logged_user_id, $recipient_id)) {
+	                        $recipient_data['is_following'] = 0;
+	                        $recipient_data['can_follow'] = 1;
+	                    }
+	                } else if ($recipient_data['follow_privacy'] == 0) {
+	                    $recipient_data['can_follow'] = 1;
+	                }
+	            }
+	        }
+	        $recipient_data['is_following_me'] = (Wo_IsFollowing( $wo['user']['user_id'], $recipient_data['user_id'])) ? 1 : 0;
+	        $recipient_data['gender_text']        = ($recipient_data['gender'] == 'male') ? $wo['lang']['male'] : $wo['lang']['female'];
+        	$recipient_data['lastseen_time_text'] = Wo_Time_Elapsed_String($recipient_data['lastseen']);
+        	$recipient_data['is_blocked']         = Wo_IsBlocked($recipient_data['user_id']);
+        	//$recipient_data['notification_settings'] = (Array)json_decode(html_entity_decode($recipient_data['notification_settings']));
+        	$response_data['user_data'] = $recipient_data;
 		}
-		
-		
 
-		if (!empty($data['followers'])) { 
+		if (!empty($data['followers'])) {
 			$followers_latest = array();
 			$followers = Wo_GetFollowers($recipient_data['user_id'], 'profile', 50);
 			foreach ($followers as $key => $follower) {
