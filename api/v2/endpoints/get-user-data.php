@@ -115,7 +115,7 @@ if (empty($error_code)) {
 		
 		
 
-		if (!empty($data['followers'])) {
+		if (!empty($data['followers'])) { 
 			$followers_latest = array();
 			$followers = Wo_GetFollowers($recipient_data['user_id'], 'profile', 50);
 			foreach ($followers as $key => $follower) {
