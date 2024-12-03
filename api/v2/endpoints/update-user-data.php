@@ -28,6 +28,32 @@ foreach ($wo['user'] as $key => $value) {
 }
 $keys[] = 'e_memory';
 $keys = implode(', ', $keys);
+$valid_flags = ['show_dob', 'show_email', 'show_gender'];
+
+// Validate and process flag updates
+$flag_updates = [];
+foreach ($valid_flags as $flag) {
+    if (isset($user_data[$flag])) {
+        $flag_value = filter_var($user_data[$flag], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if ($flag_value === null) {
+            $error_code = 9;
+            $error_message = "Invalid value for $flag. Expected true or false.";
+            break;
+        }
+        $flag_updates[$flag] = (int) $flag_value; // Convert to 0 or 1 for database storage
+    }
+}
+
+// If there are flag updates, add them to the update query
+if (empty($error_code) && !empty($flag_updates)) {
+    $update_flags = $db->where('user_id', $wo['user']['user_id'])->update(T_USERS, $flag_updates);
+    if ($update_flags) {
+        $response_data['updated_flags'] = $flag_updates;
+    } else {
+        $error_code = 10;
+        $error_message = 'Failed to update flags.';
+    }
+}
 
 if (!empty($user_data['username'])) {
 	$is_exist = Wo_IsNameExist($user_data['username'], 0);
