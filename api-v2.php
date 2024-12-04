@@ -1,5 +1,15 @@
 <?php
 // API v2 is not yet finished, you have to use the old API version.
+
+if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    $_POST['server_key']='7c06ec12d931b721ecf2c66fb556b169';
+} 
+else 
+{
+    $_POST['server_key']='5df02baa4b9705bfa29589f69fc064a0';
+}
+
+
 header_remove('Server');
 header("Content-type: application/json");
 require('assets/init.php');
@@ -57,6 +67,7 @@ $pages_without_access_token = array(
     'two-factor',
     'reset_password',
     'zomo-data-seeding',
+    'get-seeded-data',
     'validation_user'
 );
 $pages_without_loggedin     = array(
@@ -71,6 +82,7 @@ $pages_without_loggedin     = array(
     'two-factor',
     'reset_password',
     'zomo-data-seeding',
+    'get-seeded-data',
     'validation_user'
 );
 if (!file_exists($api)) {
