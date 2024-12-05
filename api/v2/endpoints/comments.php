@@ -28,7 +28,8 @@ $required_fields =  array(
                         'reply_like',
                         'reply_dislike',
                         'get_comment_likes',
-                        'get_comment_dislikes'
+                        'get_comment_dislikes',
+                        'fetch_comments_comments_reply',
                     );
 
 $limit = (!empty($_POST['limit']) && is_numeric($_POST['limit']) && $_POST['limit'] > 0 && $_POST['limit'] <= 50 ? Wo_Secure($_POST['limit']) : 20);
@@ -337,6 +338,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'comment_id can not be empty.';
         }
     }
+
     if ($_POST['type'] == 'reaction_comment') {
         if (!empty($_POST['comment_id']) && is_numeric($_POST['comment_id']) && $_POST['comment_id'] > 0) {
             $comment_id = Wo_Secure($_POST['comment_id']);
@@ -376,6 +378,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'comment_id can not be empty.';
         }
     }
+
     if ($_POST['type'] == 'reaction_reply') {
         if (!empty($_POST['reply_id']) && is_numeric($_POST['reply_id']) && $_POST['reply_id'] > 0) {
             $reply_id = Wo_Secure($_POST['reply_id']);
@@ -415,6 +418,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'reply_id can not be empty.';
         }
     }
+
     if ($_POST['type'] == 'comment_like') {
         if (!empty($_POST['comment_id']) && is_numeric($_POST['comment_id']) && $_POST['comment_id'] > 0) {
             $comment_id = Wo_Secure($_POST['comment_id']);
@@ -470,6 +474,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'comment_id can not be empty.';
         }  
     }
+
     if ($_POST['type'] == 'reply_like') {
         if (!empty($_POST['reply_id']) && is_numeric($_POST['reply_id']) && $_POST['reply_id'] > 0) {
             if (Wo_AddCommentReplyLikes($_POST['reply_id'], '') == 'unliked') {
@@ -494,6 +499,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'reply_id can not be empty.';
         }
     }
+
     if ($_POST['type'] == 'reply_dislike') {
         if (!empty($_POST['reply_id']) && is_numeric($_POST['reply_id']) && $_POST['reply_id'] > 0) {
             if (Wo_AddCommentReplyWonders($_POST['reply_id'], '') == 'unwonder') {
@@ -516,6 +522,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'reply_id can not be empty.';
         }
     }
+
     if ($_POST['type'] == 'get_comment_likes') {
         if (!empty($_POST['id']) && is_numeric($_POST['id']) && $_POST['id'] > 0) {
             $id = Wo_Secure($_POST['id']);
@@ -539,6 +546,7 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
             $error_message = 'id can not be empty';
         }
     }
+
     if ($_POST['type'] == 'get_comment_dislikes') {
         if (!empty($_POST['id']) && is_numeric($_POST['id']) && $_POST['id'] > 0) {
             $id = Wo_Secure($_POST['id']);
@@ -560,6 +568,78 @@ if (!empty($_POST['type']) && in_array($_POST['type'], $required_fields)) {
         else{
             $error_code    = 4;
             $error_message = 'id can not be empty';
+        }
+    }
+
+
+    if ($_POST['type'] == 'fetch_comments_comments_reply') {
+        if (!empty($_POST['post_id'])) {
+            $post = Wo_PostData($_POST['post_id']);
+            if (!empty($post)) {
+                $limit = (!empty($_POST['limit']) && is_numeric($_POST['limit']) && $_POST['limit'] > 0 && $_POST['limit'] <= 50 ? Wo_Secure($_POST['limit']) : 20);
+                $offset = (!empty($_POST['offset']) && is_numeric($_POST['offset']) && $_POST['offset'] > 0 ? Wo_Secure($_POST['offset']) : 0);
+                $comments = Wo_GetPostCommentsAPI($_POST['post_id'], $limit, $offset);
+
+                foreach ($comments as $key => $value) {
+
+                    if (!empty($value)) {
+                        foreach ($non_allowed as $key4 => $value4) {
+                          unset($comments[$key]['publisher'][$value4]);
+                        }
+                    }
+                    $comments[$key]['text'] = strip_tags($comments[$key]['text']);
+                    $comments[$key]['replies'] = Wo_CountCommentReplies($comments[$key]['id']);
+                    if (!empty($comments[$key]['record'])) {
+                        $comments[$key]['record'] = Wo_GetMedia($comments[$key]['record']);
+                    }
+                    if (!empty($comments[$key]['c_file'])) {
+                        $comments[$key]['c_file'] = Wo_GetMedia($comments[$key]['c_file']);
+                    }
+
+                    if($value['id'])
+                    {
+                        $p_comment_id  = $value['id'];
+                        if (!empty($p_comment_id)) {
+                
+                            $replies = Wo_GetCommentRepliesAPI($value['id'], $limit, 'ASC', $offset);
+                            foreach ($replies as $key => $value) {
+                                if (!empty($value)) {
+                                    foreach ($non_allowed as $key4 => $value4) {
+                                      unset($replies[$key]['publisher'][$value4]);
+                                    }
+                                }
+                                $replies[$key]['text'] = strip_tags($replies[$key]['text']);
+                                if (!empty($replies[$key]['c_file'])) {
+                                    $replies[$key]['c_file'] = Wo_GetMedia($replies[$key]['c_file']);
+                                }
+                            
+                                $comments[$key]['comment_replies'] = $replies;
+                            }
+
+                            
+                
+                
+                        }
+
+
+                    }
+
+
+                }
+
+                $response_data = array(
+                                        'api_status' => 200,
+                                        'data' => $comments
+                                    );
+            }
+            else{
+                $error_code    = 13;
+                $error_message = 'post not found.';
+            }
+        }
+        else{
+            $error_code    = 12;
+            $error_message = 'post_id can not be empty.';
         }
     }
 

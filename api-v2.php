@@ -24,6 +24,7 @@ $error_message  = '';
 $type           = (!empty($_GET['type'])) ? Wo_Secure($_GET['type'], 0) : false;
 $server_key     = (!empty($_POST['server_key'])) ? Wo_Secure($_POST['server_key'], 0) : false;
 
+
 if (empty($type)) {
     $response_data = array(
         'api_status' => '404',
